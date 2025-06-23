@@ -1,0 +1,184 @@
+<html>
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #E9E3E6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 70%;
+            margin-top: 80px;
+            margin-bottom: 80px;
+        }
+        h2{
+            text-align: center;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #5FB49C;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        label{
+            font-size: 20px;
+        }
+        legend{
+            font-size: 20px;
+        }
+        fieldset{
+            margin-bottom: 30px;
+        }
+        select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        div{
+            margin-bottom: 15px;
+        }
+    </style>
+<body>
+<form id="registrationForm" class="kpu-form">
+    <h2>Join RideShare KPU</h2>
+    
+    <fieldset class="verification-section">
+        <legend>KPU Student Verification</legend>
+        <br>
+        <div class="form-group">
+            <label for="studentID">KPU Student ID</label>
+            <input type="text" id="studentID" name="studentID" 
+                   pattern="[0-9]{9}" maxlength="9" required
+                   placeholder="100123456">
+            <small style="color: gray;">9-digit student ID number</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">KPU Email Address</label>
+            <input type="email" id="email" name="email" required
+                   pattern=".*@student\.kpu\.ca$"
+                   placeholder="firstname.lastname@student.kpu.ca">
+            <small style="color: gray;">Must use your official KPU email</small>
+        </div>
+    </fieldset>
+    
+    <fieldset class="personal-info-section">
+        <legend>Personal Information</legend>
+        <br>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" name="firstName" required>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" name="lastName" required>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="userType">Account Type</label>
+            <select id="userType" name="userType" required>
+                <option value="BOTH">Driver & Rider</option>
+                <option value="DRIVER">Driver Only</option>
+                <option value="RIDER">Rider Only</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="street">Street Address</label>
+            <input type="text" id="street" name="street" 
+                   placeholder="123 Main Street">
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="city">City</label>
+                <input type="text" id="city" name="city" 
+                       placeholder="Surrey">
+            </div>
+            <div class="form-group">
+                <label for="postalCode">Postal Code</label>
+                <input type="text" id="postalCode" name="postalCode" 
+                       pattern="[A-Za-z][0-9][A-Za-z] [0-9][A-Za-z][0-9]"
+                       placeholder="V3T 4H8">
+            </div>
+        </div>
+    </fieldset>
+    
+    <fieldset class="driver-section" id="driverSection" style="display:none;">
+        <legend>Driver Information</legend>
+        <br>
+        <div class="form-group">
+            <label for="licenseNumber">Driver's License Number</label>
+            <input type="text" id="licenseNumber" name="licenseNumber"
+                   placeholder="1234567">
+        </div>
+    </fieldset>
+    
+    <fieldset class="contact-section">
+        <legend>Contact Information</legend>
+        <br>
+        <div id="phoneNumbers">
+            <div class="phone-entry">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone1">Phone Number</label>
+                        <input type="tel" id="phone1" name="phoneNumbers[]" required
+                               placeholder="(604) 123-4567">
+                    </div>
+                    <div class="form-group">
+                        <label for="phoneType1">Type</label>
+                        <select id="phoneType1" name="phoneTypes[]">
+                            <option value="MOBILE">Mobile</option>
+                            <option value="HOME">Home</option>
+                            <option value="WORK">Work</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn-add-phone">+ Add Phone</button>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    
+    <fieldset class="security-section">
+        <legend>Account Security</legend>
+        <br>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" 
+                   minlength="8" placeholder="Minimum 8 characters" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+        </div>
+    </fieldset>
+    
+    <button type="submit" class="btn-primary">Create Account</button>
+</form>
+</body>
+</html>
