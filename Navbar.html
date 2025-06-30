@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+    <!--KPU red #8B2332-->
+    <head>
+    <title>Landing Page</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background: linear-gradient(135deg, #e9e3e6, #c6bfc4);
+            min-height: 100vh;
+            overflow-x: hidden;
+            max-width: 100vw;
+        }
+
+        .navbar {
+            display: flex;
+            position: sticky;
+            align-items: center;
+            justify-content: space-between;
+            top: 0px;
+            background: #5FB49C;
+            background-blend-mode: darken;
+            background-size: cover;
+            color: white;
+            padding: 5px 10px;
+        }
+
+        img{
+            width: 50px;
+        }
+
+        .pfp{
+            width: 60px;
+        }
+
+        .nav-list {
+            display: flex;
+            list-style: none;
+            color: white;
+            gap: 20px;
+        }
+        .nav-list li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+            font-size: 20px;
+        }
+
+        .nav-list li a:hover {
+            color: #333;
+        }
+
+        .rightNav {
+            display: flex;
+            text-align: right;
+            align-items: center;
+            gap: 15px;
+        }
+        .centerNav {
+            display: flex;
+            align-items: center;
+            display: flex;
+            margin-left: 120px;
+        }
+
+
+        .btn {
+            background-color: #8B2332;
+            color: white;
+            border: none;
+            width: 90px;
+            Height: 40px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+            margin-left: 30px;
+        }
+
+        .btn:hover {
+            background-color: #8b3d49;
+            color: grey;
+        }
+        .divider {
+            height: 40px;      
+            width: 1px;
+            background-color: #ffffff88; 
+            margin: 0 10px;
+        }
+    </style>
+    </head>
+
+<body>
+    <nav class="navbar">
+        <div class="leftNav">
+            <img src="images/KPU.png" alt="KPU logo">
+        </div>
+        <div class="centerNav">
+            <ul class="nav-list">
+                <li><a href="index.html">Home</a></li>
+                <div class="divider"></div>
+                <li><a href="">Create a Ride</a></li>
+                <div class="divider"></div>
+                <li><a href="">Search</a></li>
+                <div class="divider"></div>
+                <li><a href="">History</a></li>
+                <div class="divider"></div>
+                <li><a href="">Help</a></li>
+            </ul>
+        </div>
+        <div class="rightNav">
+            <button class="btn start">Sign Out</button>
+            <a href="profile.html"><img src="images/Pfp.png" alt="Placeholder Pfp" class="pfp"></a>
+        </div>
+    </nav>
+</body>
+
+</html>

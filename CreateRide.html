@@ -1,0 +1,225 @@
+<html>
+<title>RideShare KPU</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background: linear-gradient(135deg, #e9e3e6, #c6bfc4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      max-width: 100vw;
+    }
+     form {
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      width: 90%;
+      max-width: 700px;
+      margin: 40px 0;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    fieldset {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    legend {
+      font-weight: bold;
+      font-size: 20px;
+      color: #444;
+    }
+
+    label {
+      font-size: 16px;
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #bbb;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+
+    button {
+      padding: 12px;
+      width: 100%;
+      background: #5FB49C;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #489882;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .form-group {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 14px;
+      color: #777;
+      padding-bottom: 20px;
+    }
+
+    p{
+      text-align: center;
+    }
+    a{
+      color: #007bff; 
+      text-decoration: none; 
+    }
+    #navbar-placeholder {
+        width: 100%;
+    }
+    .seat-selector {
+        display: flex;
+        gap: 10px;          /* space between buttons */
+    }
+
+    .seat-btn {
+        flex: 1;            /* all buttons grow equally to fill container */
+        padding: 10px 0;
+        font-size: 16px;
+        border-radius: 6px;
+        border: 1px solid #bbb;
+        cursor: pointer;
+        background-color: #5FB49C;
+        color: white;
+        text-align: center;
+        user-select: none;
+        transition: background-color 0.3s;
+    }
+
+    .seat-btn:hover {
+        background-color: #489882;
+    }
+</style>
+<header id="navbar-placeholder"></header>
+<body>
+
+<form id="createCarpoolForm" class="kpu-form">
+    <h1>Create New Carpool</h1>
+    
+    <fieldset class="vehicle-section">
+        <legend>Vehicle Information</legend>
+        
+        <div class="form-group">
+            <label for="vehicleID">Select Vehicle *</label>
+            <select id="vehicleID" name="vehicleID" required>
+                <option value="">Choose your vehicle...</option>
+                <!-- Populated from user's registered vehicles -->
+            </select>
+            <button type="button" class="btn-secondary" onclick="registerNewVehicle()">
+                + Register New Vehicle
+            </button>
+        </div>
+    </fieldset>
+    
+    <fieldset class="route-section">
+        <legend>Route Details</legend>
+        
+        <div class="form-group">
+            <label for="originAddress">Pickup Location *</label>
+            <input type="text" id="originAddress" name="originAddress" required
+                   placeholder="Enter starting address">
+            <input type="hidden" id="originLatitude" name="originLatitude">
+            <input type="hidden" id="originLongitude" name="originLongitude">
+        </div>
+        
+        <div class="form-group">
+            <label for="destinationAddress">Destination *</label>
+            <input type="text" id="destinationAddress" name="destinationAddress" required
+                   placeholder="Enter destination address">
+            <input type="hidden" id="destinationLatitude" name="destinationLatitude">
+            <input type="hidden" id="destinationLongitude" name="destinationLongitude">
+        </div>
+        
+        -- Map Preview Container --
+        <div id="routeMap" class="map-container">
+            <p>Route will appear here after entering addresses</p>
+        </div>
+        
+        <div class="form-group">
+            <label for="distance">Distance (Auto-calculated)</label>
+            <input type="number" id="distance" name="distance" readonly
+                   step="0.1" placeholder="Will be calculated">
+            <span class="help-text">Kilometers</span>
+        </div>
+    </fieldset>
+    
+    -- Schedule Information (Composite DateTime) --
+    <fieldset class="schedule-section">
+        <legend>Departure Schedule</legend>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="departureDate">Date *</label>
+                <input type="date" id="departureDate" name="departureDate" required
+                       min="" id="minDate">
+            </div>
+            
+            <div class="form-group">
+                <label for="departureTime">Time *</label>
+                <input type="time" id="departureTime" name="departureTime" required>
+            </div>
+        </div>
+    </fieldset>
+    
+    -- Capacity Information --
+    <fieldset class="capacity-section">
+        <legend>Passenger Capacity</legend>
+        
+        <div class="form-group">
+            <label for="availableSeats">Available Seats *</label>
+            <div class="seat-selector">
+                <button type="button" class="seat-btn" data-seats="1">1</button>
+                <button type="button" class="seat-btn" data-seats="2">2</button>
+                <button type="button" class="seat-btn" data-seats="3">3</button>
+                <button type="button" class="seat-btn" data-seats="4">4</button>
+            </div>
+            <input type="hidden" id="availableSeats" name="availableSeats" required>
+        </div>
+    </fieldset>
+    
+    <button type="submit" class="btn-primary">Create Carpool</button>
+</form>
+
+<script>
+    fetch("Navbar.html")
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("navbar-placeholder").innerHTML = data;
+      });
+</script>
+</body>
+</html>
