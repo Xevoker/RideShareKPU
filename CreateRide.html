@@ -1,133 +1,15 @@
-<html>
-<title>RideShare KPU</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      background: linear-gradient(135deg, #e9e3e6, #c6bfc4);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      overflow-x: hidden;
-      max-width: 100vw;
-    }
-     form {
-      background: #fff;
-      padding: 30px 40px;
-      border-radius: 10px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-      width: 90%;
-      max-width: 700px;
-      margin: 40px 0;
-    }
+ <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>RideShare KPU</title>
+    <link rel="stylesheet" href="CSS/Style.css" />
 
-    h1 {
-      text-align: center;
-      color: #333;
-      margin-bottom: 20px;
-    }
-
-    fieldset {
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
-    }
-
-    legend {
-      font-weight: bold;
-      font-size: 20px;
-      color: #444;
-    }
-
-    label {
-      font-size: 16px;
-      font-weight: bold;
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 10px;
-      border-radius: 5px;
-      border: 1px solid #bbb;
-      margin-bottom: 15px;
-      font-size: 14px;
-    }
-
-    button {
-      padding: 12px;
-      width: 100%;
-      background: #5FB49C;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    button:hover {
-      background: #489882;
-    }
-
-    .form-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .form-group {
-      flex: 1;
-      min-width: 200px;
-    }
-
-    footer {
-      text-align: center;
-      font-size: 14px;
-      color: #777;
-      padding-bottom: 20px;
-    }
-
-    p{
-      text-align: center;
-    }
-    a{
-      color: #007bff; 
-      text-decoration: none; 
-    }
-    #navbar-placeholder {
-        width: 100%;
-    }
-    .seat-selector {
-        display: flex;
-        gap: 10px;          /* space between buttons */
-    }
-
-    .seat-btn {
-        flex: 1;            /* all buttons grow equally to fill container */
-        padding: 10px 0;
-        font-size: 16px;
-        border-radius: 6px;
-        border: 1px solid #bbb;
-        cursor: pointer;
-        background-color: #5FB49C;
-        color: white;
-        text-align: center;
-        user-select: none;
-        transition: background-color 0.3s;
-    }
-
-    .seat-btn:hover {
-        background-color: #489882;
-    }
-</style>
-<header id="navbar-placeholder"></header>
+</head>
 <body>
-
-<form id="createCarpoolForm" class="kpu-form">
+  <div id="navbar-placeholder"></div>
+  <div class="main-content">
+  <form id="createCarpoolForm" class="kpu-form">
     <h1>Create New Carpool</h1>
     
     <fieldset class="vehicle-section">
@@ -212,14 +94,20 @@
     </fieldset>
     
     <button type="submit" class="btn-primary">Create Carpool</button>
-</form>
+  </form>
+  </div>
 
-<script>
-    fetch("Navbar.html")
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById("navbar-placeholder").innerHTML = data;
-      });
+  <script>
+  async function loadNavbar() {
+    const response = await fetch('Navbar.html');
+    if (response.ok) {
+      const html = await response.text();
+      document.getElementById('navbar-placeholder').innerHTML = html;
+    } else {
+      console.error('Failed to load navbar');
+    }
+  }
+  loadNavbar();
 </script>
 </body>
 </html>
