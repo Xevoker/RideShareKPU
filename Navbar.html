@@ -1,112 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>Nav</title>
-        <style>
-        .navbar {
-            display: flex;
-            position: sticky;
-            align-items: center;
-            justify-content: space-between;
-            top: 0px;
-            background: #5FB49C;
-            background-blend-mode: darken;
-            background-size: cover;
-            color: white;
-            padding: 5px 10px;
-        }
-
-        .navbar .logo{
-            width: 50px;
-        }
-
-        .navbar .pfp{
-            width: 60px;
-        }
-
-        .navbar .nav-list {
-            display: flex;
-            list-style: none;
-            color: white;
-            gap: 20px;
-        }
-        .navbar .nav-list li a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            transition: color 0.3s ease;
-            font-size: 20px;
-        }
-
-        .navbar .nav-list li a:hover {
-            color: #333;
-        }
-
-        .navbar .rightNav {
-            display: flex;
-            text-align: right;
-            align-items: center;
-            gap: 15px;
-        }
-        .navbar .leftNav {
-            display: flex;
-            text-align: right;
-            align-items: center;
-            gap: 15px;
-        }
-        .navbar .centerNav {
-            display: flex;
-            align-items: center;
-            display: flex;
-            margin-left: 120px;
-        }
-        .navbar .btn {
-            background-color: #8B2332;
-            color: white;
-            border: none;
-            width: 90px;
-            Height: 40px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease-in-out;
-            margin-left: 30px;
-        }
-        .navbar .btn:hover {
-            background-color: #8b3d49;
-            color: grey;
-        }
-        .navbar .divider {
-            height: 40px;      
-            width: 1px;
-            background-color: #ffffff88; 
-            margin: 0 10px;
-        }
-        </style>
-    </head>
-
-
-    <nav class="navbar">
-        <div class="leftNav">
-            <img src="images/KPU.png" alt="KPU logo" class="logo">
-        </div>
-        <div class="centerNav">
-            <ul class="nav-list">
-                <li><a href="index.html">Home</a></li>
-                <div class="divider"></div>
-                <li><a href="">Create a Ride</a></li>
-                <div class="divider"></div>
-                <li><a href="">Search</a></li>
-                <div class="divider"></div>
-                <li><a href="">History</a></li>
-                <div class="divider"></div>
-                <li><a href="">Help</a></li>
-            </ul>
-        </div>
-        <div class="rightNav">
-            <button class="btn start">Sign Out</button>
-            <a href="profile.html"><img src="images/Pfp.png" alt="Placeholder Pfp" class="pfp"></a>
-        </div>
-    </nav>
-
-</html>
+ <nav class="navbar">
+  <div class="leftNav">
+    <img src="images/KPU.png" alt="KPU logo" class="logo">
+  </div>
+  <div class="centerNav">
+    <ul class="nav-list">
+      <li><a href="index.html">Home</a></li>
+      <li class="divider"></li>
+      <li><a href="#">Create a Ride</a></li>
+      <li class="divider"></li>
+      <li><a href="#">Search</a></li>
+      <li class="divider"></li>
+      <li><a href="#">History</a></li>
+      <li class="divider"></li>
+      <li><a href="#">Help</a></li>
+    </ul>
+  </div>
+  <div class="rightNav">
+    <button class="btn start">Sign Out</button>
+    <a href="profile.html"><img src="images/Pfp.png" alt="Placeholder Pfp" class="pfp"></a>
+  </div>
+</nav>
