@@ -1,0 +1,212 @@
+/* ========== RESET ========== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #222;
+  background: linear-gradient(135deg, #f9f9f9, #f1eaea);
+  line-height: 1.6;
+  overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* GLOWING BACKGROUND CIRCLES */
+body::before,
+body::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.25;
+  animation: pulseGlow 15s ease-in-out infinite;
+  z-index: 0;
+}
+body::before {
+  width: 320px;
+  height: 320px;
+  background: #990000; /* KPU dark red glow */
+  top: 10%;
+  left: 8%;
+  animation-delay: 0s;
+}
+body::after {
+  width: 380px;
+  height: 380px;
+  background: #cc3333; /* KPU accent red glow */
+  bottom: 12%;
+  right: 8%;
+  animation-delay: 7.5s;
+}
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.25; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(1.1); }
+}
+
+/* ========== MAIN CONTAINER ========== */
+.welcome-container {
+  position: relative;
+  background: #ffffffd9; /* white with slight transparency */
+  backdrop-filter: blur(8px) saturate(180%);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 60px 70px;
+  border-radius: 18px;
+  text-align: center;
+  box-shadow: 0 12px 25px rgba(153, 0, 0, 0.1);
+  max-width: 600px;
+  z-index: 1;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.welcome-container:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 18px 36px rgba(153, 0, 0, 0.25);
+}
+
+/* ========== HEADING ========== */
+h1 {
+  font-size: 2.8rem;
+  margin-bottom: 25px;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: #990000;
+  text-shadow: 0 0 8px #cc3333aa;
+}
+
+/* PARAGRAPH */
+p {
+  font-size: 1.2rem;
+  margin-bottom: 35px;
+  line-height: 1.5;
+  color: #444;
+}
+
+/* ========== FEATURE LIST ========== */
+.welcome-list {
+  text-align: left;
+  margin: 30px 0 40px;
+  list-style: none;
+  padding-left: 0;
+}
+.welcome-list li {
+  margin-bottom: 14px;
+  font-size: 1.1rem;
+  color: #660000;
+  position: relative;
+  padding-left: 30px;
+  line-height: 1.4;
+  font-weight: 600;
+}
+.welcome-list li::before {
+  content: "✔";
+  position: absolute;
+  left: 0;
+  font-size: 1.2rem;
+  color: #cc3333;
+  font-weight: bold;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+/* ========== DASHBOARD BUTTON ========== */
+.btn-dashboard {
+  display: inline-block;
+  background: linear-gradient(135deg, #990000, #cc3333);
+  color: #fff;
+  padding: 18px 48px;
+  border-radius: 45px;
+  font-weight: 700;
+  font-size: 1.3rem;
+  text-decoration: none;
+  box-shadow: 0 10px 24px rgba(153, 0, 0, 0.4);
+  transition: background 0.3s ease, transform 0.3s ease;
+  letter-spacing: 0.05em;
+  user-select: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.btn-dashboard::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 0%;
+  height: 100%;
+  background: rgba(255,255,255,0.25);
+  transition: width 0.4s ease;
+}
+.btn-dashboard:hover::before {
+  width: 100%;
+}
+.btn-dashboard:hover {
+  background: linear-gradient(135deg, #cc3333, #990000);
+  transform: translateY(-5px) scale(1.07);
+}
+.btn-dashboard:active {
+  transform: scale(0.97);
+}
+
+/* ========== EXTRA LINKS ========== */
+.extra-links {
+  margin-top: 40px;
+}
+.extra-links h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #990000;
+  margin-bottom: 10px;
+}
+.extra-links p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 6px;
+}
+.extra-links a {
+  color: #990000;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+.extra-links a:hover {
+  border-color: #cc3333;
+  color: #cc3333;
+}
+
+/* ========== FOOTER ========== */
+.welcome-footer {
+  margin-top: 50px;
+  font-size: 0.9rem;
+  color: #777;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 600px) {
+  .welcome-container {
+    padding: 40px 25px;
+  }
+  h1 {
+    font-size: 2rem;
+  }
+  p, .welcome-list li {
+    font-size: 1rem;
+  }
+  .btn-dashboard {
+    font-size: 1rem;
+    padding: 14px 36px;
+  }
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #990000, #cc3333);
+  border-radius: 5px;
+}

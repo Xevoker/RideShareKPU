@@ -1,0 +1,254 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #222;
+  background: linear-gradient(135deg, #f9f9f9, #f1eaea);
+  line-height: 1.6;
+  display: flex;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 250px;
+  background: rgba(183, 28, 28, 0.08);
+  backdrop-filter: blur(12px) saturate(180%);
+  padding: 30px 20px;
+  box-shadow: 4px 0 25px rgba(153, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo-container {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.logo-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid #b71c1c;
+  box-shadow: 0 0 15px #b71c1c80;
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.logo-img:hover {
+  transform: rotate(-5deg) scale(1.1);
+  box-shadow: 0 0 25px #cc3333aa;
+}
+
+.sidebar h2 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #b71c1c;
+  margin-bottom: 35px;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  width: 100%;
+}
+
+.sidebar nav ul li {
+  margin-bottom: 20px;
+}
+
+.sidebar nav a {
+  display: block;
+  text-decoration: none;
+  color: #b71c1c;
+  font-weight: 600;
+  padding: 12px 18px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.sidebar nav a:hover,
+.sidebar nav a.active {
+  background: linear-gradient(45deg, #e53935, #b71c1c);
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(204, 51, 51, 0.6);
+}
+
+/* MAIN CONTENT */
+.main-content {
+  flex: 1;
+  margin-left: 270px;
+  padding: 50px 70px 80px;
+  background: #fff5f5;
+  min-height: 100vh;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(153, 0, 0, 0.15);
+  overflow-y: auto;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.header h1 {
+  font-size: 28px;
+  color: #222;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.btn-notify {
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: #b71c1c;
+  cursor: pointer;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #b71c1c;
+}
+
+/* SEARCH SECTION */
+.search-section {
+  margin-bottom: 20px;
+}
+
+.search-section p {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #444;
+}
+
+.search-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #b71c1c;
+  font-size: 16px;
+  color: #222;
+}
+
+.search-bar button {
+  background: linear-gradient(45deg, #e53935, #b71c1c);
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  box-shadow: 0 4px 10px rgba(204, 51, 51, 0.6);
+}
+
+.search-bar button:hover {
+  background: linear-gradient(45deg, #cc4444, #992222);
+}
+
+/* RIDE CARDS */
+.rides-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.ride-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(183, 28, 28, 0.25);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ride-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(204, 51, 51, 0.6);
+}
+
+.ride-card h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #222;
+  font-weight: 900;
+}
+
+.ride-card p {
+  margin-bottom: 8px;
+  font-size: 15px;
+  color: #444;
+}
+
+.btn-request {
+  margin-top: 12px;
+  background: linear-gradient(45deg, #e53935, #b71c1c);
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 15px rgba(183, 28, 28, 0.6);
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.btn-request:hover {
+  background: linear-gradient(45deg, #ff6666, #d32f2f);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(204, 51, 51, 0.8);
+}
+.ride-card {
+  background: #fff;
+  border: 1px solid rgba(227,24,55,0.3);
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 12px rgba(227,24,55,0.1);
+  transition: transform 0.2s ease;
+}
+.ride-card:hover {
+  transform: translateX(4px);
+  box-shadow: 0 6px 16px rgba(227,24,55,0.3);
+}
+.ride-card h3 {
+  color: #cc3333;
+  margin-bottom: 8px;
+}
+.posted-time {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.no-rides {
+  grid-column: 1/-1;
+  text-align: center;
+  font-size: 18px;
+  color: #777;
+}

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>User Feedback – RideShare KPU</title>
+  <link rel="stylesheet" href="feedback.css" />
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="logo-container">
+      <img src="kpu.jpg" alt="RideShare KPU Logo" class="logo-img" />
+      <h2>RideShare <span>KPU</span></h2>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="dashboard.html" aria-label="Dashboard">Dashboard</a></li>
+        <li><a href="ride history.html" aria-label="Rides">Rides</a></li>
+        <li><a href="feedback.html" class="active" aria-label="User Feedback">Feedback</a></li>
+        <li><a href="profile.html" aria-label="Profile">Profile</a></li>
+        <li><a href="logout.html" aria-label="Logout">Logout</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <header class="header">
+      <h1>User <span class="user-name">Feedback</span></h1>
+      <div class="header-actions">
+        <button class="btn-notify" title="Notifications" aria-label="Notifications">🔔</button>
+        <img src="user-avatar.jpg" alt="User Avatar" class="user-avatar" />
+      </div>
+    </header>
+
+    <section class="user-feedback">
+      <h2>Give Your Feedback</h2>
+
+      <form id="feedbackForm" aria-label="Feedback form">
+        <label for="feedbackText">Your Feedback</label>
+        <textarea id="feedbackText" name="feedbackText" rows="6" placeholder="Write your feedback here..." required></textarea>
+
+        <label for="rating">Your Rating</label>
+        <div class="rating" role="radiogroup" aria-label="Rating">
+          <input type="radio" id="star5" name="rating" value="5" required />
+          <label for="star5" title="5 stars">★</label>
+          <input type="radio" id="star4" name="rating" value="4" />
+          <label for="star4" title="4 stars">★</label>
+          <input type="radio" id="star3" name="rating" value="3" />
+          <label for="star3" title="3 stars">★</label>
+          <input type="radio" id="star2" name="rating" value="2" />
+          <label for="star2" title="2 stars">★</label>
+          <input type="radio" id="star1" name="rating" value="1" />
+          <label for="star1" title="1 star">★</label>
+        </div>
+
+        <label for="userName">Your Name</label>
+        <input type="text" id="userName" name="userName" placeholder="Enter your name" required />
+
+        <button type="submit" class="btn-submit">Submit Feedback</button>
+      </form>
+
+      <div class="thank-you-message" role="alert" aria-live="polite" style="display:none;">
+        Thank you for your feedback!
+      </div>
+    </section>
+
+    <footer class="dashboard-footer">
+      <p>© 2025 RideShare KPU. All rights reserved.</p>
+      <div class="social-links" aria-label="Social Media Links">
+        <a href="#" title="Facebook" aria-label="Facebook">Facebook</a> |
+        <a href="#" title="Twitter" aria-label="Twitter">Twitter</a> |
+        <a href="#" title="Instagram" aria-label="Instagram">Instagram</a>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    const form = document.getElementById('feedbackForm');
+    const thankYou = document.querySelector('.thank-you-message');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      // Collect form data
+      const feedback = form.feedbackText.value.trim();
+      const rating = form.rating.value;
+      const userName = form.userName.value.trim();
+
+      if (!feedback || !rating || !userName) {
+        alert("Please fill out all fields and select a rating.");
+        return;
+      }
+
+      // You could send this data to a server here...
+
+      form.reset();
+      thankYou.style.display = 'block';
+
+      setTimeout(() => {
+        thankYou.style.display = 'none';
+      }, 4000);
+    });
+  </script>
+</body>
+</html>

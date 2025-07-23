@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Edit Profile - Light Theme</title>
+  <link rel="stylesheet" href="update.css" />
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="logo-container">
+      <img src="a.jpg" alt="Logo" class="logo-img" />
+      <h2>My<span>App</span></h2>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="update.html" class="active">Edit Profile</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="settings.html">Settings</a></li>
+        <li><a href="logout.html">Logout</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <header class="header">
+      <h1>Edit Profile</h1>
+      <div class="header-actions">
+        <button class="btn-notify" title="Notifications">🔔</button>
+        <img src="user.jpg" alt="User Avatar" class="user-avatar" />
+      </div>
+    </header>
+
+    <section class="update-info-form">
+      <form>
+        <div class="form-group">
+          <label for="fullname">Full Name</label>
+          <input type="text" id="fullname" name="fullname" placeholder="Enter your full name" required />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" required />
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" placeholder="+1 234 567 8901" />
+        </div>
+
+        <div class="form-group">
+          <label for="car-make">Car Make</label>
+          <input type="text" id="car-make" name="car-make" placeholder="e.g., Toyota, Honda" />
+        </div>
+
+        <div class="form-group">
+          <label for="car-model">Car Model</label>
+          <input type="text" id="car-model" name="car-model" placeholder="e.g., Corolla, Civic" />
+        </div>
+
+        <div class="form-group">
+          <label for="car-year">Car Year</label>
+          <select id="car-year" name="car-year">
+            <option value="" disabled selected>Select year</option>
+            <!-- Simple range, update as needed -->
+            <option>2025</option>
+            <option>2024</option>
+            <option>2023</option>
+            <option>2022</option>
+            <option>2021</option>
+            <option>2020</option>
+            <option>2019</option>
+            <option>2018</option>
+            <option>2017</option>
+            <option>2016</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="license-plate">License Plate</label>
+          <input type="text" id="license-plate" name="license-plate" placeholder="Enter license plate number" />
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-save">Save Changes</button>
+          <button type="reset" class="btn-cancel">Cancel</button>
+        </div>
+      </form>
+    </section>
+  </main>
+</body>
+</html>
+S

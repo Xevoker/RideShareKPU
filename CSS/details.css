@@ -1,0 +1,260 @@
+/* RESET & BASE */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f9f9f9, #f1eaea);
+  color: #222;
+  user-select: none;
+  overflow-x: hidden;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 260px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(14px) saturate(160%);
+  padding: 35px 25px;
+  box-shadow: 5px 0 30px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1100;
+  border-right: 3px solid #b71c1c;
+}
+
+.logo-container {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.logo-img {
+  width: 80px;
+  border-radius: 14px;
+  margin-bottom: 14px;
+  border: 2px solid #b71c1c;
+  box-shadow: 0 0 15px rgba(183,28,28,0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+.logo-img:hover {
+  transform: scale(1.1) rotate(-3deg);
+  box-shadow: 0 0 20px rgba(183,28,28,0.8);
+}
+
+.sidebar h2 {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #111;
+  letter-spacing: 0.06em;
+}
+.sidebar h2 span {
+  color: #b71c1c;
+  text-shadow: 0 0 8px #ffb3b3;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 25px;
+}
+.sidebar nav li {
+  margin-bottom: 28px;
+}
+.sidebar nav a {
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #444;
+  text-decoration: none;
+  padding: 12px 18px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+.sidebar nav a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, #e53935, #b71c1c);
+  border-radius: 3px;
+  transition: 0.3s ease;
+  transform: translateX(-50%);
+}
+.sidebar nav a:hover::after,
+.sidebar nav a.active::after {
+  width: 80%;
+}
+.sidebar nav a:hover,
+.sidebar nav a.active {
+  color: #b71c1c;
+  background: rgba(183,28,28,0.08);
+  box-shadow: 0 0 10px rgba(183,28,28,0.25);
+}
+
+.home-btn {
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+
+/* MAIN CONTENT */
+.main-content {
+  margin-left: 260px;
+  flex: 1;
+  padding: 48px 70px;
+  max-width: calc(100vw - 260px);
+  overflow-x: hidden;
+}
+
+.header h1 {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #111;
+  margin-bottom: 40px;
+  letter-spacing: 0.03em;
+}
+
+/* RIDE DETAILS CARD */
+.ride-details-card {
+  background: #fff5f5;
+  border-radius: 24px;
+  padding: 40px 50px;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+  max-width: 900px;
+}
+.ride-details-card h2 {
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: #b71c1c;
+  margin-bottom: 12px;
+}
+.ride-date {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 28px 50px;
+  margin-bottom: 36px;
+}
+.details-grid h3 {
+  font-weight: 900;
+  font-size: 1.2rem;
+  color: #b71c1c;
+  margin-bottom: 8px;
+}
+.details-grid p {
+  font-size: 1.15rem;
+  color: #555;
+  font-weight: 600;
+}
+
+/* Status styles */
+.status {
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-weight: 900;
+  font-size: 1rem;
+  text-transform: uppercase;
+  display: inline-block;
+  letter-spacing: 0.04em;
+}
+.status.confirmed {
+  background: #c8e6c9;
+  color: #256029;
+  box-shadow: 0 0 10px #a5d6a7;
+}
+.status.pending {
+  background: #ffe0b2;
+  color: #8d5e00;
+  box-shadow: 0 0 10px #ffcc80;
+}
+.status.cancelled {
+  background: #ffcdd2;
+  color: #9c1b1b;
+  box-shadow: 0 0 10px #ef9a9a;
+}
+
+.ride-notes {
+  background: #ffeaea;
+  border-left: 5px solid #b71c1c;
+  padding: 20px 24px;
+  border-radius: 14px;
+  font-style: italic;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 40px;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 26px;
+  flex-wrap: wrap;
+}
+.action-buttons a {
+  padding: 16px 36px;
+  border-radius: 18px;
+  font-weight: 900;
+  font-size: 1.15rem;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Primary button */
+.btn-primary {
+  background: linear-gradient(45deg, #ff4d4d, #b71c1c);
+  color: #fff;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+.btn-primary:hover {
+  background: linear-gradient(45deg, #ff6666, #d32f2f);
+  transform: translateY(-3px) scale(1.05);
+}
+
+/* Secondary button */
+.btn-secondary {
+  background: #fff;
+  border: 3px solid #b71c1c;
+  color: #b71c1c;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.btn-secondary:hover {
+  background: #ffeaea;
+  color: #b71c1c;
+  transform: translateY(-3px);
+}
+
+/* Cancel/back button */
+.btn-cancel {
+  background: #eee;
+  color: #444;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+}
+.btn-cancel:hover {
+  background: #ddd;
+  color: #111;
+  transform: translateY(-3px);
+}

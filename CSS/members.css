@@ -1,0 +1,197 @@
+/* ===== RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #222;
+  background: #f8f6f6;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ===== HEADER ===== */
+header {
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 8%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.logo-img {
+  height: 45px;
+  width: auto;
+}
+header h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #222;
+}
+header h1 span {
+  color: #e50000;
+}
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1.2rem;
+}
+nav a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+nav a:hover,
+nav a.active {
+  background: #e50000;
+  color: #fff;
+}
+
+/* ===== HERO ===== */
+.hero {
+  background: linear-gradient(135deg, #e50000, #a40000);
+  color: #fff;
+  padding: 4rem 10%;
+  text-align: center;
+}
+.hero h2 {
+  font-size: 2rem;
+  margin-bottom: 0.8rem;
+}
+.hero p {
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ===== MEMBERS DETAIL ===== */
+.members-detail {
+  padding: 3rem 10%;
+  text-align: center;
+  background: #f9f9f9;
+}
+.members-detail h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+.members-detail p {
+  max-width: 800px;
+  margin: 0 auto 2rem;
+  color: #555;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+.stat-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease;
+}
+.stat-card:hover {
+  transform: translateY(-4px);
+}
+.stat-card h3 {
+  font-size: 1.6rem;
+  margin-bottom: 0.4rem;
+  color: #e50000;
+}
+
+/* ===== AVATARS SECTION ===== */
+.members-list {
+  padding: 3rem 10%;
+  text-align: center;
+}
+.members-list h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+.members-list p {
+  color: #555;
+  max-width: 800px;
+  margin: 0 auto 2rem;
+}
+.avatars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+.avatar-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+.avatar-card:hover {
+  transform: translateY(-4px);
+}
+.avatar-card img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 0.6rem;
+}
+.avatar-card h4 {
+  margin-bottom: 0.2rem;
+  color: #e50000;
+}
+
+/* ===== CTA ===== */
+.cta {
+  padding: 3rem 10%;
+  background: #e50000;
+  color: #fff;
+  text-align: center;
+}
+.cta h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+.cta p {
+  margin-bottom: 1.5rem;
+}
+.cta .btn.primary {
+  background: #fff;
+  color: #e50000;
+  padding: 0.7rem 1.5rem;
+  font-weight: 700;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+.cta .btn.primary:hover {
+  background: #f0f0f0;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  background: #222;
+  color: #eee;
+  text-align: center;
+  padding: 1rem 10%;
+}
+footer a {
+  color: #ffb3b3;
+  text-decoration: none;
+}
+footer a:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Offer a Ride – RideShare</title>
+  <link rel="stylesheet" href="offer.css" />
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo-container">
+      <img src="a.jpg" class="logo-img" alt="Logo">
+      <h2>Ride<span>Share</span></h2>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li><a href="ride history.html">My Rides</a></li>
+        <li><a href="messages.html">Messages</a></li>
+        <li><a href="offer.html" class="active">Offer Ride</a></li>
+        <li><a href="find.html">Find Ride</a></li>
+        <li><a href="settings.html">Settings</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <header class="header">
+      <h1>Offer a Ride</h1>
+      <div class="header-actions">
+        <button class="btn-notify" title="Notifications">
+          <i class="fas fa-bell"></i>
+        </button>
+        <img src="a.jpg" class="user-avatar" alt="User Avatar">
+      </div>
+    </header>
+
+    <section class="offer-ride-intro">
+      <p>
+        Fill out the details below to offer a ride to your fellow KPU students.
+        Once submitted, your ride will be visible to others in the community.
+        You can cancel your ride anytime.
+      </p>
+    </section>
+<section class="offer-ride-form">
+  <form id="rideForm">
+    <div class="form-group">
+      <label for="from">Starting Point</label>
+      <select id="from" name="from" required>
+        <option value="" disabled selected>Select Starting Point</option>
+        <option value="Langley">Langley</option>
+        <option value="Richmond">Richmond</option>
+        <option value="Civic Plaza">Civic Plaza</option>
+        <option value="Surrey Campus">Surrey Campus</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="to">Destination</label>
+      <select id="to" name="to" required>
+        <option value="" disabled selected>Select Destination</option>
+        <option value="Langley">Langley</option>
+        <option value="Richmond">Richmond</option>
+        <option value="Civic Plaza">Civic Plaza</option>
+        <option value="Surrey Campus">Surrey Campus</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="date">Date</label>
+      <input type="date" id="date" name="date" required />
+    </div>
+
+    <div class="form-group">
+      <label for="time">Time</label>
+      <input type="time" id="time" name="time" required />
+    </div>
+
+    <div class="form-group">
+      <label for="seats">Available Seats</label>
+      <input type="number" id="seats" name="seats" min="1" max="6" required />
+    </div>
+
+    <div class="form-group">
+      <label for="notes">Notes (optional)</label>
+      <textarea id="notes" name="notes" placeholder="Any special instructions?"></textarea>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn-action">Post Ride</button>
+      <a href="dashboard.html" class="btn-cancel">Cancel</a>
+    </div>
+  </form>
+</section>
+
+
+    <section class="rides-list">
+      <h2>Your Offered Rides</h2>
+      <ul id="ridesContainer"></ul>
+    </section>
+  </main>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // Load actual current user
+  let currentUserName = "Guest";
+  const savedProfile = JSON.parse(localStorage.getItem("rideShareProfile"));
+  if (savedProfile && savedProfile.fullName) {
+    currentUserName = savedProfile.fullName;
+  } else {
+    const savedSession = JSON.parse(localStorage.getItem("rideShareSession"));
+    if (savedSession && savedSession.username) {
+      currentUserName = savedSession.username;
+    }
+  }
+  console.log("Current user:", currentUserName);
+
+  const rideForm = document.getElementById("rideForm");
+  const ridesContainer = document.getElementById("ridesContainer");
+
+  let savedRides = JSON.parse(localStorage.getItem("rides") || "[]");
+  let activities = JSON.parse(localStorage.getItem("rideShareActivities") || "[]");
+  console.log("Loaded rides from localStorage:", savedRides);
+
+  function saveRides() {
+    localStorage.setItem("rides", JSON.stringify(savedRides));
+    console.log("Saved rides to localStorage:", savedRides);
+  }
+  function saveActivities() {
+    localStorage.setItem("rideShareActivities", JSON.stringify(activities));
+  }
+  function addActivity(text) {
+    const now = new Date().toISOString();
+    activities.unshift({ text, date: now });
+    if (activities.length > 20) activities.pop();
+    saveActivities();
+  }
+
+  function renderRides() {
+    console.log("Rendering rides for user:", currentUserName);
+    ridesContainer.innerHTML = "";
+    savedRides.forEach((ride) => {
+      console.log("Checking ride:", ride.id, "driver:", ride.driver);
+      if (ride.driver === currentUserName && ride.status === "offered") {
+        const li = document.createElement("li");
+        li.className = "ride-item";
+        li.dataset.id = ride.id; 
+        li.innerHTML = `
+          <strong>${ride.from}</strong> ➡️ <strong>${ride.to}</strong><br>
+          Date: ${ride.date} | Time: ${ride.time} | Seats: ${ride.seats}<br>
+          ${ride.notes ? `Notes: ${ride.notes}<br>` : ""}
+          <em>Posted at: ${ride.postedAt}</em><br>
+          <button class="cancel-btn">Cancel Ride</button>
+        `;
+        ridesContainer.appendChild(li);
+      }
+    });
+  }
+
+  renderRides();
+
+  // Submit new ride
+  rideForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const from = document.getElementById("from").value.trim();
+    const to = document.getElementById("to").value.trim();
+    const date = document.getElementById("date").value;
+    const time = document.getElementById("time").value;
+    const seats = parseInt(document.getElementById("seats").value, 10);
+    const notes = document.getElementById("notes").value.trim();
+
+    console.log("Form submission data:", { from, to, date, time, seats, notes });
+
+    if (!from || !to || !date || !time || !seats || seats < 1) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    const ride = {
+      id: Date.now().toString(),
+      from,
+      to,
+      date,
+      time,
+      seats,
+      notes,
+      postedAt: new Date().toLocaleString(),
+      driver: currentUserName,
+      status: "offered",
+      passengers: []
+    };
+
+    console.log("New ride object created:", ride);
+
+    savedRides.push(ride);
+    saveRides();
+    addActivity(`You offered a ride: ${from} ➡ ${to} on ${date}`);
+    rideForm.reset();
+    renderRides();
+    alert("Your ride has been posted!");
+    // window.location.href = "dashboard.html"; // optional redirect, comment out during testing
+  });
+
+  // Cancel offered ride
+  ridesContainer.addEventListener("click", (e) => {
+    if (e.target.classList.contains("cancel-btn")) {
+      const li = e.target.closest("li");
+      const rideId = li.dataset.id;
+      const rideIndex = savedRides.findIndex(r => r.id === rideId && r.driver === currentUserName);
+      if (rideIndex === -1) {
+        console.log("Cancel ride: ride not found or driver mismatch");
+        return;
+      }
+
+      const ride = savedRides[rideIndex];
+      if (confirm(`Cancel the ride from ${ride.from} to ${ride.to}?`)) {
+        savedRides.splice(rideIndex, 1);
+        saveRides();
+        addActivity(`You cancelled a ride: ${ride.from} ➡ ${ride.to}`);
+        renderRides();
+      }
+    }
+  });
+});
+
+</script>
+
+</body>
+</html>

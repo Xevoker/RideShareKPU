@@ -1,0 +1,222 @@
+/* ===== RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #222;
+  background: #f8f6f6; /* light neutral background like other pages */
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ===== HEADER ===== */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 5%;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.logo-img {
+  height: 40px;
+  width: auto;
+}
+
+header h1 {
+  font-size: 1.6rem;
+  color: #222;
+}
+header h1 span {
+  color: #e50000; /* KPU red */
+  font-weight: 700;
+}
+
+nav ul {
+  display: flex;
+  gap: 1.2rem;
+  list-style: none;
+}
+nav a {
+  text-decoration: none;
+  color: #444;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+nav a:hover,
+nav a.active {
+  color: #e50000;
+}
+
+/* ===== HERO SECTION ===== */
+.hero {
+  background: linear-gradient(135deg, #e50000, #a40000);
+  color: #fff;
+  padding: 5rem 10% 4rem;
+  text-align: center;
+}
+.hero h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+.hero p {
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto 2rem;
+}
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+.btn {
+  display: inline-block;
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+.btn.primary {
+  background: #fff;
+  color: #e50000;
+}
+.btn.primary:hover {
+  background: #f0f0f0;
+}
+.btn.secondary {
+  background: transparent;
+  color: #fff;
+  border: 2px solid #fff;
+}
+.btn.secondary:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+/* ===== BENEFIT DETAIL ===== */
+.benefit-detail {
+  padding: 3rem 10%;
+  background: #f9f9f9;
+  text-align: center;
+}
+.benefit-detail h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: #222;
+}
+.benefit-detail p {
+  font-size: 1rem;
+  max-width: 800px;
+  margin: 0 auto 2rem;
+  color: #555;
+}
+
+/* Cards for saving points */
+.saving-points {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+.point-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  text-align: left;
+  transition: transform 0.3s ease;
+}
+.point-card:hover {
+  transform: translateY(-4px);
+}
+.point-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #e50000;
+}
+
+/* ===== SAVINGS TABLE ===== */
+.savings-example {
+  padding: 3rem 10%;
+  background: #fff;
+  text-align: center;
+}
+.savings-example h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+.savings-example p {
+  color: #555;
+}
+.savings-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+}
+.savings-table th,
+.savings-table td {
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+}
+.savings-table th {
+  background: #e50000;
+  color: #fff;
+  font-weight: 600;
+}
+.savings-table tfoot th {
+  background: #444;
+  color: #fff;
+}
+
+/* ===== CTA ===== */
+.cta {
+  padding: 3rem 10%;
+  background: #e50000;
+  color: #fff;
+  text-align: center;
+}
+.cta h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+.cta p {
+  margin-bottom: 1.5rem;
+}
+.cta .btn.primary {
+  background: #fff;
+  color: #e50000;
+  font-weight: 700;
+}
+.cta .btn.primary:hover {
+  background: #f0f0f0;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  padding: 1rem 5%;
+  background: #222;
+  color: #ddd;
+  text-align: center;
+  font-size: 0.9rem;
+}
+footer a {
+  color: #fff;
+  text-decoration: underline;
+}
+footer a:hover {
+  color: #e50000;
+}

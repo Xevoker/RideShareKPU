@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ride Details – RideShare KPU</title>
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="details.css" />
+  <style>
+    /* Minimal inline styles for demo */
+    .status.confirmed { color: green; }
+    .status.pending { color: orange; }
+    .status.cancelled { color: red; }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo-container">
+      <img src="kpu.jpg" alt="KPU Logo" class="logo-img" />
+      <h2>RideShare <span>KPU</span></h2>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="dashboard.html">📊 Dashboard</a></li>
+        <li><a href="join.html">🚗 Join Ride</a></li>
+        <li><a href="offer.html">🛣 Offer Ride</a></li>
+        <li><a href="profile.html">👤 Profile</a></li>
+        <li><a href="messages.html">💬 Messages</a></li>
+        <li><a href="ride.html" class="home-btn">🏠 Home</a></li>
+        <li><a href="logout.html">🔓 Logout</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <header class="header">
+      <h1>Ride Details</h1>
+    </header>
+
+    <section class="ride-details-card">
+      <h2 id="route">Loading...</h2>
+      <p class="ride-date" id="date">Date: </p>
+
+      <div class="details-grid">
+        <div>
+          <h3>Driver</h3>
+          <p id="driver">Loading...</p>
+        </div>
+        <div>
+          <h3>Pickup Location</h3>
+          <p id="pickup">Loading...</p>
+        </div>
+        <div>
+          <h3>Dropoff Location</h3>
+          <p id="dropoff">Loading...</p>
+        </div>
+        <div>
+          <h3>Available Seats</h3>
+          <p id="seats">Loading...</p>
+        </div>
+        <div>
+          <h3>Status</h3>
+          <p id="status" class="status">Loading...</p>
+        </div>
+        <div>
+          <h3>Estimated Time</h3>
+          <p id="time">Loading...</p>
+        </div>
+      </div>
+
+      <section class="ride-notes">
+        <h3>Notes from Driver</h3>
+        <p id="notes">Loading...</p>
+      </section>
+
+      <div class="action-buttons">
+        <a href="history.html" class="btn-primary">Check Ride History</a>
+        <a href="feedback.html" class="btn-secondary">Give Feedback</a>
+        <a href="dashboard.html" class="btn-cancel">Back to Dashboard</a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Sample ride data, ideally this would come from a backend API or database
+    const ridesData = [
+      {
+        id: 1,
+        route: "Surrey Campus ➡ Langley Campus",
+        date: "July 20, 2025",
+        driver: "Alex M.",
+        pickup: "Surrey Campus Parking Lot A",
+        dropoff: "Langley Campus Main Entrance",
+        seats: 2,
+        status: "confirmed",
+        time: "30 minutes",
+        notes: "Please be on time. Masks are optional but appreciated."
+      },
+      {
+        id: 2,
+        route: "Langley Campus ➡ Surrey Campus",
+        date: "July 23, 2025",
+        driver: "Jamie L.",
+        pickup: "Langley Campus Entrance",
+        dropoff: "Surrey Campus Parking Lot B",
+        seats: 1,
+        status: "pending",
+        time: "40 minutes",
+        notes: "Will leave exactly at 5 PM."
+      },
+      {
+        id: 3,
+        route: "Surrey Campus ➡ Richmond Campus",
+        date: "July 27, 2025",
+        driver: "Sarah P.",
+        pickup: "Surrey Campus Main Gate",
+        dropoff: "Richmond Campus South Lot",
+        seats: 3,
+        status: "cancelled",
+        time: "50 minutes",
+        notes: "Ride cancelled due to vehicle issues."
+      }
+    ];
+
+    // Helper function to get rideId from URL query string
+    function getRideIdFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      return parseInt(params.get('rideId'));
+    }
+
+    // Function to populate ride details
+    function populateRideDetails(ride) {
+      if (!ride) {
+        document.getElementById('route').textContent = "Ride not found.";
+        return;
+      }
+      document.getElementById('route').textContent = ride.route;
+      document.getElementById('date').textContent = "Date: " + ride.date;
+      document.getElementById('driver').textContent = ride.driver;
+      document.getElementById('pickup').textContent = ride.pickup;
+      document.getElementById('dropoff').textContent = ride.dropoff;
+      document.getElementById('seats').textContent = ride.seats;
+      const statusEl = document.getElementById('status');
+      statusEl.textContent = ride.status.charAt(0).toUpperCase() + ride.status.slice(1);
+      statusEl.className = "status " + ride.status;
+      document.getElementById('time').textContent = ride.time;
+      document.getElementById('notes').textContent = ride.notes;
+    }
+
+    // On page load
+    document.addEventListener('DOMContentLoaded', () => {
+      const rideId = getRideIdFromUrl();
+      const ride = ridesData.find(r => r.id === rideId);
+      populateRideDetails(ride);
+    });
+  </script>
+</body>
+</html>

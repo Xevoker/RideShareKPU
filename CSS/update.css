@@ -1,0 +1,293 @@
+/* Reset & base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f9f9f9, #eaeaea);
+  color: #222;
+  min-height: 100vh;
+  display: flex;
+  overflow-x: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 260px;
+  background: #fff;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  border-right: 2.5px solid #C8102E;
+  /* Removed box-shadow */
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 12px;
+  /* Removed box-shadow */
+}
+
+.logo-container h2 {
+  color: #C8102E;
+  font-weight: 900;
+  font-size: 1.8rem;
+  user-select: none;
+  letter-spacing: 0.07em;
+}
+
+.logo-container h2 span {
+  color: #222;
+  font-weight: 700;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.sidebar nav ul li a {
+  color: #555;
+  font-weight: 600;
+  font-size: 1.1rem;
+  text-decoration: none;
+  padding: 12px 20px;
+  border-radius: 12px;
+  display: block;
+  transition: background 0.3s ease, color 0.3s ease;
+  user-select: none;
+  /* Removed inset box-shadow */
+}
+
+.sidebar nav ul li a:hover,
+.sidebar nav ul li a.active {
+  background: #C8102E;
+  color: #fff;
+  /* Removed box-shadow */
+  font-weight: 800;
+}
+
+/* Main Content */
+.main-content {
+  margin-left: 260px;
+  padding: 40px 60px 60px;
+  flex-grow: 1;
+  background: linear-gradient(180deg, #fff, #f0f0f0);
+  min-height: 100vh;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  user-select: none;
+}
+
+.header h1 {
+  font-weight: 900;
+  font-size: 2.8rem;
+  color: #C8102E;
+  letter-spacing: 0.07em;
+  /* Removed text-shadow */
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.btn-notify {
+  background: transparent;
+  border: none;
+  font-size: 1.9rem;
+  color: #C8102E;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  padding: 6px;
+  user-select: none;
+}
+
+.btn-notify:hover {
+  color: #222;
+  /* Removed text-shadow */
+}
+
+.user-avatar {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #C8102E;
+  /* Removed box-shadow */
+}
+
+/* Update Info Form */
+.update-info-form {
+  background: #fff;
+  padding: 40px 30px;
+  border-radius: 15px;
+  max-width: 600px;
+  margin: 0 auto 60px;
+  /* Removed box-shadow */
+}
+
+.update-info-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #C8102E;
+  user-select: none;
+  /* Removed text-shadow */
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 14px 18px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 2px solid #C8102E;
+  outline: none;
+  background: #fff;
+  color: #222;
+  /* Removed box-shadow */
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #C8102E;
+  /* Removed box-shadow */
+}
+
+/* Buttons */
+.form-actions {
+  display: flex;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.btn-save,
+.btn-cancel {
+  padding: 14px 40px;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  border: none;
+  text-decoration: none;
+  user-select: none;
+  display: inline-block;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.btn-save {
+  background: linear-gradient(45deg, #C8102E, #8B0A21);
+  color: #fff;
+  border: 2px solid transparent;
+  /* Removed box-shadow */
+}
+
+.btn-save:hover {
+  background: linear-gradient(45deg, #A10E2A, #5C0717);
+  color: #fff;
+  /* Removed box-shadow */
+}
+
+.btn-cancel {
+  background: transparent;
+  color: #C8102E;
+  border: 2px solid #C8102E;
+  text-align: center;
+  line-height: 1.4;
+  /* Removed box-shadow */
+}
+
+.btn-cancel:hover {
+  background: #C8102E;
+  color: #fff;
+  /* Removed box-shadow */
+}
+
+/* Responsive for smaller screens */
+@media (max-width: 900px) {
+  .sidebar {
+    width: 210px;
+    padding: 25px 15px;
+  }
+  .main-content {
+    margin-left: 210px;
+    padding: 35px 40px 50px;
+  }
+}
+
+@media (max-width: 650px) {
+  body {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 2.5px solid #C8102E;
+    padding: 15px 20px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .sidebar nav ul {
+    flex-direction: row;
+    gap: 18px;
+  }
+  .main-content {
+    margin-left: 0;
+    padding: 30px 20px 40px;
+  }
+  .update-info-form {
+    padding: 30px 20px;
+    margin-bottom: 40px;
+  }
+  .form-actions {
+    flex-direction: column;
+    gap: 15px;
+  }
+  .btn-save,
+  .btn-cancel {
+    width: 100%;
+    padding: 14px 0;
+  }
+}

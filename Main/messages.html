@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Messages – RideShare</title>
+  <link rel="stylesheet" href="messages.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* Added message count badge style */
+    .msg-count {
+      background-color: #4caf50;
+      color: white;
+      border-radius: 12px;
+      padding: 2px 8px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    /* Optional: total messages counter style */
+    #totalMessagesCount {
+      margin: 10px 0;
+      font-weight: 600;
+      color: #333;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo-container">
+      <img src="a.jpg" class="logo-img" alt="Logo">
+      <h2>Ride<span>Share</span></h2>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li><a href="ride history.html">Ride History</a></li>
+        <li><a href="messages.html" class="active">Messages</a></li>
+        <li><a href="settings.html">Settings</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <header class="header">
+      <h1>Messages</h1>
+      <div class="header-actions">
+        <button class="btn-notify" title="Notifications"><i class="fas fa-bell"></i></button>
+        <img src="a.jpg" class="user-avatar" alt="User Avatar">
+      </div>
+    </header>
+
+    <section class="messages-container">
+      <!-- Conversation List -->
+      <div class="conversation-list">
+        <div class="search-bar">
+          <input type="text" id="searchUser" placeholder="Search for someone..." />
+          <i class="fas fa-search"></i>
+        </div>
+        <h2>Conversations</h2>
+        <div id="totalMessagesCount">Total messages: 0</div> <!-- Added total messages -->
+        <div class="conversations" id="conversations">
+          <!-- Conversations are dynamically inserted here -->
+        </div>
+      </div>
+
+      <!-- Chat Window -->
+      <div class="chat-window">
+        <div class="chat-header" id="chatHeader">
+          <img src="a.jpg" alt="User" class="chat-avatar" id="chatAvatar">
+          <h3 id="chatName">Select a conversation</h3>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+          <p class="placeholder">Select a user to start chatting</p>
+        </div>
+        <form class="chat-input" id="chatForm" style="display:none;">
+          <input type="text" id="messageInput" placeholder="Type a message..." required />
+          <button type="submit"><i class="fas fa-paper-plane"></i></button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Dummy user list
+    const users = [
+      { name: 'Emily R.', lastMsg: 'Thanks for the ride! 🚗', avatar: 'a.jpg' },
+      { name: 'Michael K.', lastMsg: 'See you at Langley Campus.', avatar: 'a.jpg' },
+      { name: 'Sarah L.', lastMsg: 'Is the ride still available?', avatar: 'a.jpg' },
+      { name: 'Alex P.', lastMsg: 'Let’s plan for tomorrow.', avatar: 'a.jpg' },
+      { name: 'Nina S.', lastMsg: 'Can you pick me up at 3?', avatar: 'a.jpg' }
+    ];
+
+    const conversationsEl = document.getElementById('conversations');
+    const chatMessagesEl = document.getElementById('chatMessages');
+    const chatNameEl = document.getElementById('chatName');
+    const chatAvatarEl = document.getElementById('chatAvatar');
+    const chatForm = document.getElementById('chatForm');
+    const messageInput = document.getElementById('messageInput');
+    const totalMessagesCountEl = document.getElementById('totalMessagesCount');
+
+    let activeUser = null;
+
+    // Calculate total messages across all users
+    function getTotalMessages() {
+      return users.reduce((sum, user) => {
+        const msgs = JSON.parse(localStorage.getItem('chat_' + user.name)) || [];
+        return sum + msgs.length;
+      }, 0);
+    }
+
+    // Load conversations into the list with message count badge
+    function loadConversations(filter='') {
+      conversationsEl.innerHTML = '';
+
+      let totalMessages = 0;
+
+      users
+        .filter(u => u.name.toLowerCase().includes(filter.toLowerCase()))
+        .forEach(u => {
+          const messages = JSON.parse(localStorage.getItem('chat_' + u.name)) || [];
+          totalMessages += messages.length;
+
+          const div = document.createElement('div');
+          div.className = 'conversation';
+          div.innerHTML = `
+            <img src="${u.avatar}" class="conv-avatar">
+            <div class="conv-info">
+              <h3>${u.name} <span class="msg-count">${messages.length}</span></h3>
+              <p>${u.lastMsg}</p>
+            </div>`;
+          div.addEventListener('click', (event) => openConversation(u, event));
+          conversationsEl.appendChild(div);
+        });
+
+      totalMessagesCountEl.textContent = `Total messages: ${getTotalMessages()}`;
+    }
+
+    // Open a conversation
+    function openConversation(user, event) {
+      activeUser = user.name;
+      document.querySelectorAll('.conversation').forEach(c => c.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+
+      chatNameEl.textContent = user.name;
+      chatAvatarEl.src = user.avatar;
+      chatForm.style.display = 'flex';
+      renderMessages(user.name);
+    }
+
+    // Render messages from localStorage
+    function renderMessages(userName) {
+      chatMessagesEl.innerHTML = '';
+      const saved = JSON.parse(localStorage.getItem('chat_' + userName)) || [];
+      saved.forEach(m => {
+        const div = document.createElement('div');
+        div.className = 'msg ' + (m.type === 'sent' ? 'sent' : 'received');
+        div.innerHTML = `<p>${m.text}</p><span class="time">${m.time}</span>`;
+        chatMessagesEl.appendChild(div);
+      });
+      chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+    }
+
+    // Handle send message
+    chatForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const text = messageInput.value.trim();
+      if(!text || !activeUser) return;
+
+      const time = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+      const saved = JSON.parse(localStorage.getItem('chat_' + activeUser)) || [];
+      saved.push({ text, time, type:'sent' });
+      localStorage.setItem('chat_' + activeUser, JSON.stringify(saved));
+      messageInput.value = '';
+      renderMessages(activeUser);
+
+      // Update lastMsg for user preview and refresh conversations list
+      const user = users.find(u => u.name === activeUser);
+      if(user) {
+        user.lastMsg = text.length > 25 ? text.substring(0, 22) + '...' : text;
+      }
+      loadConversations(document.getElementById('searchUser').value);
+    });
+
+    // Search user
+    document.getElementById('searchUser').addEventListener('input', (e)=>{
+      loadConversations(e.target.value);
+    });
+
+    // Initial load
+    loadConversations();
+  </script>
+</body>
+</html>

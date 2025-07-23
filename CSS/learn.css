@@ -1,0 +1,162 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #222;
+  background: linear-gradient(135deg, #f9f9f9, #f1eaea);
+  line-height: 1.6;
+  overflow-x: hidden;
+  min-height: 100vh;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* HEADER */
+header {
+  max-width: 900px;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+header h1 {
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: #b71c1c;
+  text-shadow: 0 0 12px #cc3333;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+header p {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #992222;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* MAIN CONTAINER */
+main {
+  max-width: 900px;
+  background: rgba(255, 230, 230, 0.85);
+  padding: 40px 50px;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(179, 0, 0, 0.3);
+  color: #4a0000;
+  line-height: 1.7;
+  font-size: 1.15rem;
+}
+
+/* HEADINGS */
+h2 {
+  color: #b71c1c;
+  font-weight: 700;
+  font-size: 2.4rem;
+  margin-top: 36px;
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #cc3333;
+}
+
+/* LISTS */
+ul, ol {
+  margin-left: 30px;
+  margin-bottom: 36px;
+  color: #660000;
+  font-weight: 500;
+}
+
+ul li strong,
+ol li strong {
+  color: #b71c1c;
+}
+
+/* LINKS inside main */
+main a {
+  color: #b71c1c;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+main a:hover {
+  color: #cc4444;
+}
+
+/* BUTTON */
+a.btn {
+  display: inline-block;
+  margin-top: 40px;
+  padding: 14px 36px;
+  background: linear-gradient(135deg, #b71c1c, #660000);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.15rem;
+  border-radius: 40px;
+  text-decoration: none;
+  box-shadow: 0 8px 22px rgba(179, 0, 0, 0.6);
+  transition: all 0.3s ease;
+  user-select: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+a.btn::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 0%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.25);
+  transition: width 0.4s ease;
+  border-radius: 40px;
+  z-index: 0;
+}
+
+a.btn:hover::before {
+  width: 100%;
+}
+
+a.btn:hover {
+  box-shadow: 0 12px 28px rgba(153, 0, 0, 0.8);
+  transform: translateY(-3px);
+  color: #ffeaea;
+  z-index: 1;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  body {
+    padding: 30px 16px;
+  }
+  header h1 {
+    font-size: 2rem;
+  }
+  header p {
+    font-size: 1rem;
+  }
+  main {
+    padding: 30px 25px;
+    font-size: 1rem;
+  }
+  h2 {
+    font-size: 2rem;
+    margin-top: 28px;
+    margin-bottom: 16px;
+  }
+  ul, ol {
+    margin-left: 20px;
+    margin-bottom: 28px;
+  }
+  a.btn {
+    padding: 12px 28px;
+    font-size: 1rem;
+    margin-top: 36px;
+  }
+}

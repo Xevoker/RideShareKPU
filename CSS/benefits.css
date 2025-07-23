@@ -1,0 +1,227 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f5f5f5;
+  color: #222;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+/* Header */
+header {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 50px;
+  flex-wrap: wrap;
+  background: #ffffffd9;
+  padding: 15px 25px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  backdrop-filter: blur(6px);
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo-img {
+  width: 70px;
+  border-radius: 12px;
+  border: 2px solid #990000;
+  box-shadow: 0 0 10px #99000055;
+}
+
+header h1 {
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: #990000;
+  text-shadow: 0 0 6px #99000033;
+}
+
+header h1 span {
+  color: #b30000;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+nav ul li a {
+  color: #333;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  font-size: 1.05rem;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+  background: linear-gradient(45deg, #990000, #cc3333);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 4px 15px rgba(153,0,0,0.4);
+}
+
+/* Main Benefits Container */
+.benefits-container {
+  max-width: 900px;
+  background: #ffffff;
+  padding: 45px 55px;
+  border-radius: 18px;
+  box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+  color: #333;
+  line-height: 1.65;
+  font-size: 1.12rem;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+.benefits-container h2 {
+  font-size: 2.8rem;
+  font-weight: 900;
+  margin-bottom: 25px;
+  text-transform: uppercase;
+  color: #990000;
+  letter-spacing: 0.09em;
+  text-shadow: 0 0 6px #99000022;
+}
+
+.benefits-container p {
+  margin-bottom: 40px;
+  font-weight: 500;
+  color: #444;
+}
+
+/* Benefits Grid */
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+/* Individual Benefit Card */
+.benefit-card {
+  background: #fff6f6;
+  border: 2px solid #cc3333;
+  border-radius: 16px;
+  padding: 25px 20px;
+  box-shadow: 0 6px 12px rgba(204, 51, 51, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  color: #660000;
+  text-align: left;
+}
+
+.benefit-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(204, 51, 51, 0.3);
+}
+
+.benefit-card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 12px;
+  font-weight: 800;
+  color: #990000;
+}
+
+.benefit-card p {
+  font-size: 1.05rem;
+  line-height: 1.4;
+}
+
+/* Join Now Button */
+.btn.primary-btn {
+  display: inline-block;
+  background: linear-gradient(135deg, #990000, #cc3333);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.3rem;
+  padding: 18px 48px;
+  border-radius: 45px;
+  box-shadow: 0 10px 24px rgba(153,0,0,0.4);
+  cursor: pointer;
+  text-decoration: none;
+  user-select: none;
+  transition: background 0.3s ease, transform 0.3s ease;
+  letter-spacing: 0.05em;
+}
+
+.btn.primary-btn:hover {
+  background: linear-gradient(135deg, #cc3333, #990000);
+  transform: translateY(-5px);
+  box-shadow: 0 14px 32px rgba(153,0,0,0.6);
+}
+
+/* Footer */
+footer {
+  width: 100%;
+  max-width: 900px;
+  padding: 25px 15px;
+  background: #eee;
+  color: #444;
+  margin-top: 60px;
+  text-align: center;
+  font-size: 0.95rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+}
+
+footer a {
+  color: #990000;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+footer a:hover {
+  color: #cc3333;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  header {
+    justify-content: center;
+    gap: 20px;
+    text-align: center;
+  }
+
+  nav ul {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .benefits-container {
+    padding: 30px 25px;
+  }
+
+  .benefits-container h2 {
+    font-size: 2rem;
+  }
+
+  .benefit-card h3 {
+    font-size: 1.2rem;
+  }
+
+  .btn.primary-btn {
+    font-size: 1.1rem;
+    padding: 14px 36px;
+  }
+}

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login – RideShare KPU</title>
+  <link rel="stylesheet" href="login.css" />
+</head>
+<body>
+  <div class="login-container">
+    <div class="form-box">
+      <div class="logo">
+        <img src="kpu.jpg" alt="KPU Logo" />
+        <h1>RideShare <span>KPU</span></h1>
+      </div>
+      <h2>Welcome Back</h2>
+      <p class="intro-text">Log in to continue sharing rides with your KPU community.</p>
+
+      <form id="loginForm" class="login-form" novalidate>
+        <div class="input-group">
+          <label for="email">KPU Email</label>
+          <input type="email" id="email" name="email" placeholder="you@kpu.ca" required />
+        </div>
+
+        <div class="input-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Enter your password" required />
+        </div>
+
+        <button type="submit" class="btn-login">Log In</button>
+      </form>
+
+      <p class="forgot-password">
+        <a href="#" id="forgotPasswordLink">Forgot Password?</a>
+      </p>
+
+      <p class="signup-text">
+        Don’t have an account? <a href="signup.html">Sign Up</a>
+      </p>
+    </div>
+  </div>
+
+<script>
+  d<script>
+  document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+
+    const email = emailInput.value.trim().toLowerCase();
+    const password = passwordInput.value;
+
+    // Load users from localStorage
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+
+    // Find matching user by email and password
+    const user = users.find(u => u.email === email && u.password === password);
+
+    if (!user) {
+      alert('Invalid email or password. Please try again.');
+      passwordInput.value = '';
+      passwordInput.focus();
+      return;
+    }
+
+    // ✅ Save logged-in user data in localStorage
+    localStorage.setItem('currentUser', JSON.stringify(user));
+
+    // ✅ ALSO save as active profile for dashboard & rides
+    localStorage.setItem('rideShareProfile', JSON.stringify({
+      fullName: user.fullname,
+      studentid: user.studentid,
+      email: user.email,
+      role: user.role
+    }));
+
+    // Redirect to dashboard
+    window.location.href = 'dashboard.html';
+  });
+
+  // Forgot Password handler
+  document.getElementById('forgotPasswordLink').addEventListener('click', function(e) {
+    e.preventDefault();
+
+    const emailPrompt = prompt('Please enter your registered KPU email for password reset:');
+    if (!emailPrompt) return;
+
+    const email = emailPrompt.trim().toLowerCase();
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const user = users.find(u => u.email === email);
+
+    if (!user) {
+      alert('Email not found. Please check and try again.');
+      return;
+    }
+
+    alert(`Password reset instructions sent to ${email}. Please check your email.`);
+  });
+</script>
+
+
+</script>
+</body>
+</html>
