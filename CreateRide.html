@@ -96,18 +96,5 @@
     <button type="submit" class="btn-primary">Create Carpool</button>
   </form>
   </div>
-
-  <script>
-  async function loadNavbar() {
-    const response = await fetch('Navbar.html');
-    if (response.ok) {
-      const html = await response.text();
-      document.getElementById('navbar-placeholder').innerHTML = html;
-    } else {
-      console.error('Failed to load navbar');
-    }
-  }
-  loadNavbar();
-</script>
 </body>
 </html>
