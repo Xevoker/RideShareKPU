@@ -1,4 +1,8 @@
 <?php
+include '../PHP/sessioncheck.php';
+echo '<pre>';
+print_r($_SESSION);
+echo '</pre>';
   $userName = $_SESSION['firstName']
 ?>
 <!DOCTYPE html>
@@ -23,11 +27,10 @@
       <ul>
         <li><a href="dashboard.html" class="active" aria-label="Dashboard">📊 Dashboard</a></li>
         <li><a href="join.html" aria-label="Join Ride">🚗 Join Ride</a></li>
-        <li><a href="join.html" aria-label="Offer Ride">🛣 Offer Ride</a></li>
-        <li><a href="profile.html" aria-label="Profile">👤 Profile</a></li>
+        <li><a href="offer.php" aria-label="Offer Ride">🛣 Offer Ride</a></li>
+        <li><a href="profile.php" aria-label="Profile">👤 Profile</a></li>
         <li><a href="messages.html" aria-label="Messages">💬 Messages</a></li>
         <li><a href="ride history.html" aria-label="Ride History">📜 Ride History</a></li>
-        <li><a href="ride.html" aria-label="Home Page">🏠 Home Page</a></li>
         <li><a href="logout.html" aria-label="Logout">🔓 Logout</a></li>
       </ul>
     </nav>
@@ -38,12 +41,15 @@
 
     <!-- Header -->
     <header class="header">
-      <h1>Welcome back, <span class="user-name"><?php echo htmlspecialchars($userName); ?></span>! 👋</h1>
+      <h1>Welcome back, <?php echo htmlspecialchars($userName) ?></span>! 👋</h1>
       <div class="header-actions">
         <button class="btn-notify" title="Notifications">🔔</button>
         <img src="../images/a.jpg" alt="User Avatar" class="user-avatar" />
       </div>
     </header>
+<?php
+
+?>
 
     
     

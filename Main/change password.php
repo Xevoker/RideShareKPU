@@ -1,5 +1,6 @@
 <?php
-include '../Php/db.php';
+include '../PHP/sessioncheck.php';
+include '../PHP/db.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $userID = $_SESSION['userID'];
     $currentPassword = $_POST['currentPassword'];
@@ -25,9 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $changeMessage = "✅ Password successfully updated!";
     }
 }
-?>
-
-
 ?>
 
 <!DOCTYPE html>

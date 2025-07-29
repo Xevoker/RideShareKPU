@@ -168,7 +168,7 @@ try {
         <button type="submit" class="btn-signup">Sign Up Now</button>
       </form>
 
-      <p class="login-text">Already have an account? <a href="login.html">Log in</a></p>
+      <p class="login-text">Already have an account? <a href="login.php">Log in</a></p>
     </div>
   </div>
 <script>

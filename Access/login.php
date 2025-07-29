@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
   if ($id && password_verify($password, $password_hash)) {
       
       // Successful login
-      $_SESSION['user_id'] = $id;
+      $_SESSION['userID'] = $id;
       $_SESSION['firstName'] = $firstName;
       header("Location: ../Main/dashboard.php");
       exit;
