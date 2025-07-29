@@ -29,87 +29,70 @@ body {
 
 /* SIDEBAR */
 .sidebar {
-  width: 260px;
-  background: #fff;
-  padding: 35px 25px;
-  box-shadow: 6px 0 20px rgba(0,0,0,0.05);
+  width: 250px;
+  background: rgba(153, 0, 0, 0.1);
+  backdrop-filter: blur(15px);
+  padding: 30px 20px;
+  box-shadow: 4px 0 25px rgba(153, 0, 0, 0.3);
+  position: fixed;
+  top: 0;
+  bottom: 0;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  position: fixed;
-  left: 0;
-  top: 0;
-  border-right: 3px solid rgba(153,0,0,0.25);
-  z-index: 100;
+  align-items: center;
+  z-index: 1000;
 }
 
 .logo-container {
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
 }
+
 .logo-img {
   width: 80px;
-  border-radius: 16px;
-  margin-bottom: 14px;
+  border-radius: 12px;
+  margin-bottom: 10px;
   border: 2px solid #990000;
-  box-shadow: 0 0 14px #ffb3b3;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-  cursor: pointer;
 }
-.logo-img:hover {
-  transform: scale(1.08);
-  box-shadow: 0 0 20px #e53935;
-}
+
 .sidebar h2 {
-  font-size: 2rem;
-  font-weight: 900;
-  color: #111;
-  letter-spacing: 0.03em;
-}
-.sidebar h2 span {
+  font-size: 1.8rem;
+  font-weight: 800;
   color: #990000;
-  text-shadow: 0 0 8px #ffb3b3;
+  user-select: none;
+}
+
+.sidebar h2 span {
+  color: #cc3333;
 }
 
 .sidebar nav ul {
   list-style: none;
-  margin-top: 25px;
+  width: 100%;
 }
+
 .sidebar nav li {
-  margin-bottom: 24px;
+  margin-bottom: 22px;
 }
+
 .sidebar nav a {
   display: block;
-  font-weight: 700;
-  font-size: 1.1rem;
-  color: #444;
   text-decoration: none;
-  padding: 12px 18px;
-  border-radius: 12px;
-  position: relative;
-  transition: all 0.35s ease;
+  color: #cc3333;
+  font-weight: 600;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 1.05rem;
+  transition: all 0.3s ease;
+  user-select: none;
 }
-.sidebar nav a::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 0%;
-  height: 3px;
-  background: linear-gradient(90deg, #e53935, #b71c1c);
-  transform: translateX(-50%);
-  transition: 0.3s ease;
-  border-radius: 3px;
-}
-.sidebar nav a:hover::after,
-.sidebar nav a.active::after {
-  width: 80%;
-}
-.sidebar nav a:hover,
-.sidebar nav a.active {
-  color: #990000;
-  background: rgba(153,0,0,0.08);
-  box-shadow: 0 0 10px rgba(153,0,0,0.2);
+
+.sidebar nav a.active,
+.sidebar nav a:hover {
+  background: linear-gradient(45deg, #cc3333, #b71c1c);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(204, 51, 51, 0.7);
 }
 
 /* MAIN CONTENT */

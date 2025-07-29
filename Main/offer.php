@@ -71,13 +71,16 @@ if ($driverID && $originAddress && $destinationAddress && $departureDate && $dep
     </div>
     <nav>
       <ul>
-        <li><a href="dashboard.html">Dashboard</a></li>
-        <li><a href="profile.html">Profile</a></li>
-        <li><a href="ride history.html">My Rides</a></li>
-        <li><a href="messages.html">Messages</a></li>
-        <li><a href="offer.html" class="active">Offer Ride</a></li>
-        <li><a href="find.html">Find Ride</a></li>
-        <li><a href="settings.html">Settings</a></li>
+        <li><a href="dashboard.php"aria-label="Dashboard">Dashboard</a></li>
+        <li><a href="join.html" aria-label="Join Ride">Join Ride</a></li>
+        <li><a href="offer.php" aria-label="Offer Ride">Offer Ride</a></li>
+        <li><a href="find.html" aria-label="Find Ride">Find Ride</a></li>
+        <li><a href="profile.php" aria-label="Profile">Profile</a></li>
+        <li><a href="messages.html" aria-label="Messages">Messages</a></li>
+        <li><a href="ride history.html" aria-label="Ride History">Ride History</a></li>
+        <li><a href="feedback.html" aria-label="User Feedback">Feedback</a></li>
+        <li><a href="settings.html"aria-label="Settings">Settings</a></li>
+        <li><a href="logout.php" aria-label="Logout">Logout</a></li>
       </ul>
     </nav>
   </aside>
