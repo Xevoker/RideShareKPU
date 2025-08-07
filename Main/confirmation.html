@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ride Confirmed</title>
+  <link rel="stylesheet" href="../CSS/confirmation.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="logo-container">
+      <img src="kpu.jpg" alt="KPU Logo" class="logo-img">
+      <h1>RideShare <span>KPU</span></h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="ride.html" class="active">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="benefits.html">Benefits</a></li>
+        <li><a href="work.html">How It Works</a></li>
+        <li><a href="location.html">Location</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="confirmation-box">
+    <h1>🎉 Ride Confirmed!</h1>
+    <div class="info" id="rideDetails">Loading...</div>
+    <a href="dashboard.php">Go to Dashboard</a>
+  </div>
+<!-- Footer -->
+  <footer id="contact">
+    <p>&copy; 2025 RideShare KPU | Built by KPU Students | <a href="contact.html">Contact Us</a></p>
+  </footer>
+
+  <script>
+    const details = JSON.parse(localStorage.getItem("lastConfirmedRide"));
+    const rideDetailsDiv = document.getElementById("rideDetails");
+
+    if (details) {
+      rideDetailsDiv.innerHTML = `
+        <p><strong>From:</strong> ${details.from}</p>
+        <p><strong>To:</strong> ${details.to}</p>
+        <p><strong>Date:</strong> ${details.date}</p>
+        <p><strong>Time:</strong> ${details.time}</p>
+        <p><strong>Driver:</strong> ${details.driver}</p>
+      `;
+    } else {
+      rideDetailsDiv.textContent = "No ride data found.";
+    }
+  </script>
+</body>
+</html>

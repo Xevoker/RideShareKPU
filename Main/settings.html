@@ -11,7 +11,7 @@
   <!-- Sidebar -->
   <aside class="sidebar">
     <div class="logo-container">
-      <img src="../images/a.jpg" class="logo-img" alt="Logo" />
+      <img src="../images/kpu.jpg" class="logo-img" alt="Logo" />
       <h2>Ride<span>Share</span></h2>
     </div>
     <nav>
@@ -110,13 +110,13 @@
       localStorage.setItem('currentUser', JSON.stringify(user));
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
+    /* window.addEventListener('DOMContentLoaded', () => {
       const currentUser = getCurrentUser();
       if (!currentUser) {
         alert('No user logged in. Redirecting to login page.');
-        window.location.href = 'login.html';
+        window.location.href = '../Access/login.php';
         return;
-      }
+      } */
 
       // Populate form fields with user data
       document.getElementById('displayNameInput').value = currentUser.displayName || '';

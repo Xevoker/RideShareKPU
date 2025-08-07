@@ -14,7 +14,6 @@ body {
   min-height: 100vh;
 }
 
-/* SIDEBAR */
 .sidebar {
   width: 250px;
   background: rgba(153, 0, 0, 0.1);
@@ -28,6 +27,7 @@ body {
   flex-direction: column;
   align-items: center;
   z-index: 1000;
+  overflow-y: auto; /* Scrollable if tall */
 }
 
 .logo-container {
@@ -82,67 +82,21 @@ body {
   box-shadow: 0 4px 10px rgba(204, 51, 51, 0.7);
 }
 
-/* MAIN CONTENT */
+/* =========================
+   MAIN CONTENT WRAPPER
+   ========================= */
 .main-content {
   margin-left: 270px;
-  padding: 50px 70px 80px;
+  padding: 40px 60px 80px;
   background: #fff5f5;
-  min-height: 100vh;
   border-radius: 20px;
   box-shadow: 0 8px 30px rgba(153, 0, 0, 0.15);
-  position: relative;
-  z-index: 10;
-}
-
-/* HEADER */
-.header {
+  min-height: 100vh;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 35px;
+  flex-direction: column;
+  gap: 40px;
   user-select: none;
 }
-
-.header h1 {
-  font-size: 2.5rem;
-  font-weight: 900;
-  color: #b71c1c;
-  text-transform: uppercase;
-  letter-spacing: -0.02em;
-  text-shadow: 0 0 10px #cc3333aa;
-}
-
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.btn-notify {
-  background: transparent;
-  border: none;
-  font-size: 1.6rem;
-  color: #b71c1c;
-  cursor: pointer;
-  position: relative;
-  transition: color 0.3s ease;
-}
-
-.btn-notify:hover,
-.btn-notify:focus {
-  color: #990000;
-  outline: none;
-}
-
-.user-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: 2px solid #b71c1c;
-  box-shadow: 0 0 8px #b71c1caa;
-  object-fit: cover;
-}
-
 /* OFFER RIDE INTRO */
 .offer-ride-intro p {
   font-size: 1.15rem;
