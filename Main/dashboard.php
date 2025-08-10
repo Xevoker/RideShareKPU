@@ -1,45 +1,46 @@
 <?php
+//Session start and database
 include '../PHP/sessioncheck.php';
   $userName = $_SESSION['firstName'];
-
 include '../PHP/db.php'; 
 
 $carpoolID = $_SESSION['carpoolID'] ?? null;
 $userID = $_SESSION['userID'];
+// Get the addresses for the map
 $stmt = $conn->prepare("SELECT originAddress, destinationAddress FROM CARPOOL WHERE carpoolID = :cid");
 $stmt->execute([':cid' => $carpoolID]);
 $carpool = $stmt->fetch(PDO::FETCH_ASSOC);
 
-  //Upcoming
-  $sqlup = "SELECT COUNT(*) AS total FROM CARPOOL 
-          WHERE driverID = :userID AND status = 'offered'";
-  $stmt = $conn->prepare($sqlup);
-  $stmt->execute([':userID' => $userID]);
-  $row1 = $stmt->fetch(PDO::FETCH_ASSOC);
+//Upcoming
+$sqlup = "SELECT COUNT(*) AS total FROM CARPOOL 
+        WHERE driverID = :userID AND status = 'offered'";
+$stmt = $conn->prepare($sqlup);
+$stmt->execute([':userID' => $userID]);
+$row1 = $stmt->fetch(PDO::FETCH_ASSOC);
 
-  $upcomingRides = $row1['total'];
+$upcomingRides = $row1['total'];
 
-  // Offered 
-  $sqloff = "SELECT COUNT(*) AS total FROM CARPOOL 
-          WHERE driverID = :userID AND status = 'complete'";
-  $stmt = $conn->prepare($sqloff);
-  $stmt->execute([':userID' => $userID]);
-  $row2 = $stmt->fetch(PDO::FETCH_ASSOC);
+// Offered 
+$sqloff = "SELECT COUNT(*) AS total FROM CARPOOL 
+        WHERE driverID = :userID AND status = 'complete'";
+$stmt = $conn->prepare($sqloff);
+$stmt->execute([':userID' => $userID]);
+$row2 = $stmt->fetch(PDO::FETCH_ASSOC);
 
-  $ridesOffered = $row2['total'] ?? 0;
+$ridesOffered = $row2['total'] ?? 0;
 
-  //taken
-  $sqlta = "SELECT COUNT(*) AS total 
-          FROM RIDE
-          WHERE  riderID = :userID";
-  $stmt = $conn->prepare($sqlta);
-  $stmt->execute([':userID' => $userID]);
-  $row3 = $stmt->fetch(PDO::FETCH_ASSOC);
+//taken
+$sqlta = "SELECT COUNT(*) AS total 
+        FROM RIDE
+        WHERE  riderID = :userID";
+$stmt = $conn->prepare($sqlta);
+$stmt->execute([':userID' => $userID]);
+$row3 = $stmt->fetch(PDO::FETCH_ASSOC);
 
-  $ridesTaken = $row3['total'] ?? 0;
+$ridesTaken = $row3['total'] ?? 0;
 
+//Grabs the pickup locations
 if (!$carpool) {
-
 }
 else{
 $stmt = $conn->prepare("SELECT pickupLocation FROM RIDE WHERE carpoolID = :cid");
@@ -56,7 +57,7 @@ $pickups = $stmt->fetchAll(PDO::FETCH_COLUMN);
   <title>Dashboard – RideShare KPU</title>
   <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../CSS/dashboard.css">
-<script src="../Js/dashboard.js"></script>
+<script src="dashboard.js"></script>
 <style>
     #map {
       height: 600px;

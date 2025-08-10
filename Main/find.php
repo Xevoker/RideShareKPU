@@ -1,12 +1,13 @@
 <?php
+//Session start and database
 session_start();
-require '../PHP/db.php'; // connection
-
+require '../PHP/db.php';
 if (!isset($_SESSION['userID'])) {
     header("Location: ../Access/login.php");
     exit();
 }
 
+// Search avaliable rides
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $_SESSION['search_destination'] = $_POST['searchLocation'] ?? '';
     $_SESSION['search_time'] = $_POST['searchtime'] ?? '';
@@ -165,6 +166,7 @@ if (!empty($destinationSearch)) {
 
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1J-oGI6bSoPOCz_Gu8hYl_spxzgY7-EM&libraries=places"></script>
   <script>
+    //Google autocomplete
     function initAutocomplete() {
       const pickupInput = document.getElementById("pickupLocation");
       const destInput = document.getElementById("searchLocation");

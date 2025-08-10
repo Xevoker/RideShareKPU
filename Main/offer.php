@@ -1,6 +1,6 @@
 <?php
+//Session start and database
 session_start();
-
 if (!isset($_SESSION['userID'])) {
     header("Location: ../Access/login.php");
     exit();
@@ -8,49 +8,52 @@ if (!isset($_SESSION['userID'])) {
 include '../PHP/db.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
-$driverID = $_SESSION['userID'] ?? null;
-$originAddress = trim($_POST['startaddress'] ?? '');
-$destinationAddress = trim($_POST['endaddress'] ?? '');
-$departureDate = $_POST['date'] ?? '';
-$departureTime = $_POST['time'] ?? '';
-$notes = $_POST['notes'] ?? null;
-$availableSeats = intval($_POST['seats'] ?? 0);
-$status = "offered";
+  //Variables
+  $driverID = $_SESSION['userID'] ?? null;
+  $originAddress = trim($_POST['startaddress'] ?? '');
+  $destinationAddress = trim($_POST['endaddress'] ?? '');
+  $departureDate = $_POST['date'] ?? '';
+  $departureTime = $_POST['time'] ?? '';
+  $notes = $_POST['notes'] ?? null;
+  $availableSeats = intval($_POST['seats'] ?? 0);
+  $status = "offered";
+  
+  // Inserts into table
+  if ($driverID && $originAddress && $destinationAddress && $departureDate && $departureTime && $availableSeats > 0) {
 
-if ($driverID && $originAddress && $destinationAddress && $departureDate && $departureTime && $availableSeats > 0) {
+      $sql = "INSERT INTO CARPOOL 
+              (driverID, originAddress, destinationAddress, departureDate, departureTime, availableSeats, status, notes) 
+              VALUES 
+              (:driverID, :originAddress, :destinationAddress, :departureDate, :departureTime, :availableSeats, :status, :notes)";
 
-    $sql = "INSERT INTO CARPOOL 
-            (driverID, originAddress, destinationAddress, departureDate, departureTime, availableSeats, status, notes) 
-            VALUES 
-            (:driverID, :originAddress, :destinationAddress, :departureDate, :departureTime, :availableSeats, :status, :notes)";
+      $stmt = $conn->prepare($sql);
+      if (!$stmt) {
+          $errorInfo = $conn->errorInfo();
+          die("Error preparing SQL statement: " . implode(" | ", $errorInfo));
+      }
 
-    $stmt = $conn->prepare($sql);
-    if (!$stmt) {
-        $errorInfo = $conn->errorInfo();
-        die("Error preparing SQL statement: " . implode(" | ", $errorInfo));
-    }
+      $result = $stmt->execute([
+          ':driverID'         => $driverID,
+          ':originAddress'    => $originAddress,
+          ':destinationAddress' => $destinationAddress,
+          ':departureDate'    => $departureDate,
+          ':departureTime'    => $departureTime,
+          ':availableSeats'   => $availableSeats,
+          ':status'           => $status,
+          ':notes'         => $notes
+      ]);
 
-    $result = $stmt->execute([
-        ':driverID'         => $driverID,
-        ':originAddress'    => $originAddress,
-        ':destinationAddress' => $destinationAddress,
-        ':departureDate'    => $departureDate,
-        ':departureTime'    => $departureTime,
-        ':availableSeats'   => $availableSeats,
-        ':status'           => $status,
-        ':notes'         => $notes
-    ]);
+      $carpoolID = $conn->lastInsertId();
 
-    $carpoolID = $conn->lastInsertId();
+      $_SESSION['carpoolID'] = $carpoolID;
 
-    $_SESSION['carpoolID'] = $carpoolID;
+      echo "Ride posted successfully.";
 
-    echo "Ride posted successfully.";
-
-} else {
-    echo "Missing required fields or invalid data.";
+  } else {
+      echo "Missing required fields or invalid data.";
+  }
 }
-}
+// Display your offerred rides
 $offeredRides = [];
 $driverID = $_SESSION['userID'];
 $sql = "SELECT * FROM CARPOOL WHERE driverID = :driverID AND status = 'offered' ORDER BY departureDate, departureTime";
@@ -58,6 +61,7 @@ $stmt = $conn->prepare($sql);
 $stmt->execute([':driverID' => $driverID]);
 $offeredRides = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+// Deletes ride when cancelleds
 if (isset($_POST['cancel'])) {
     $cancelID = intval($_POST['cancel']);
     $driverID = $_SESSION['userID'];

@@ -1,4 +1,5 @@
 <?php
+//Session start and database
 session_start();
 require_once '../PHP/db.php';
 
@@ -22,6 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
   $averageRating = 0;
   $code = $_POST['code'];
 
+  //Wrong code
   if (trim($code) !== trim((string)$_SESSION['verify_code'])){
     echo "<script>alert('Wrong verification code.'); window.location.href = 'verify.php';</script>";
   }
@@ -29,15 +31,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
     // Hash the password
     $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
     $createdAt = $dateJoined = $updatedAt = date('Y-m-d H:i:s');
+    
     // Insert user into the database
-
     $sql = "INSERT INTO USER (studentID, firstName, lastName, email, userType, licenseNumber,
         street, city, postalCode, preferences, dateJoined, isActive, averageRating,
         createdAt, updatedAt, userPassword)
         VALUES (  :studentID, :firstName, :lastName, :email, :userType, :licenseNumber,
         :street, :city, :postalCode, :preferences, :dateJoined, :isActive, :averageRating,
         :createdAt, :updatedAt, :userPassword)";
-
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
         $errorInfo = $conn->errorInfo();
@@ -62,6 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
     ':updatedAt'     => $updatedAt,
     ]);
 
+    // Get userID
     $stmt = $conn->prepare("SELECT userID FROM USER WHERE studentID = :studentID");
     if (!$stmt) {
         $errorInfo = $conn->errorInfo();
@@ -71,9 +73,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     $id = $user['userID'];
 
+    //Insert phone number
     $sql2 = "INSERT INTO PHONE (userID, phoneNumber, phoneType)
         VALUES ( :userID, :phoneNumber, :phoneType)";
-
     $stmt = $conn->prepare($sql2);
     if (!$stmt) {
         $errorInfo = $conn->errorInfo();
@@ -84,8 +86,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
     ':phoneNumber'   => $phone,
     ':phoneType'     => $phoneType,
     ]);
-
-
     header("Location: ../Access/login.php");
         exit();
 }

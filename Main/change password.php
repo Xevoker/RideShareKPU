@@ -1,4 +1,5 @@
 <?php
+//Session start and database
 include '../PHP/sessioncheck.php';
 include '../PHP/db.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -7,11 +8,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $newPassword = $_POST['newPassword'];
     $confirmPassword = $_POST['confirmPassword'];
 
-    // 1. Fetch current hashed password
+    // Get the current hashed password
     $stmt = $conn->prepare("SELECT userPassword FROM USER WHERE userID = ?");
     $stmt->execute([$userID]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
+    //Check the old password and confrims the new password
     if (!$row || !password_verify($currentPassword, $row['userPassword'])) {
         $changeMessage = "Current password is incorrect.";
     } elseif ($newPassword !== $confirmPassword) {
@@ -19,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (strlen($newPassword) < 8) {
         $changeMessage = "Password must be at least 8 characters.";
     } else {
-        // 2. Hash and update
+        // Hash the new password and update
         $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
         $updateStmt = $conn->prepare("UPDATE USER SET userPassword = ? WHERE userID = ?");
         $updateStmt->execute([$hashedPassword, $userID]);

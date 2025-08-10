@@ -1,9 +1,11 @@
 <?php
+//Session start and database
 require '../PHP/sessioncheck.php';
 require '../PHP/db.php';
 
 $userID = $_SESSION['userID'];
 
+//Grabs a name, latest messagem total messages, and date, time , destination for conversation card
 $sql = "
     SELECT 
         c.carpoolID,
@@ -36,7 +38,6 @@ $sql = "
     GROUP BY c.carpoolID, otherName, c.departureDate, c.departureTime, c.destinationAddress
     ORDER BY MAX(m.timestamp) DESC
 ";
-
 $stmt = $conn->prepare($sql);
 $stmt->execute(['uid' => $userID]);
 $conversations = $stmt->fetchAll(PDO::FETCH_ASSOC);

@@ -1,12 +1,13 @@
 <?php
+//Session start and database
 session_start();
-
 if (!isset($_SESSION['userID'])) {
     header("Location: ../Access/login.php");
     exit();
 }
 include '../PHP/db.php';
 
+  // Get data from USER 
   $stmt = $conn->prepare("SELECT userID, studentID, firstName, lastName, email, userType, licenseNumber, street, city, postalCode, preferences, dateJoined, isActive, averageRating, createdAt, updatedAt, userPassword
   FROM USER WHERE userID = :userID");
   if (!$stmt) {
@@ -15,7 +16,8 @@ include '../PHP/db.php';
     }
     $stmt->execute([':userID' => $_SESSION['userID']]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
+  
+  // Get data from PHONE 
   $stmt2 = $conn->prepare("SELECT phoneNumber
   FROM PHONE WHERE userID = :userID");
   if (!$stmt2) {
@@ -25,10 +27,12 @@ include '../PHP/db.php';
     $stmt2->execute([':userID' => $_SESSION['userID']]);
     $user2 = $stmt2->fetch(PDO::FETCH_ASSOC);
 
+    // Gets the user rating
     $stmt3 = $conn->prepare("SELECT AVG(rating) AS totalrating FROM RATE WHERE driverID = :userID");
     $stmt3->execute([':userID' => $_SESSION['userID']]);
     $avg = $stmt3->fetch(PDO::FETCH_ASSOC);
 
+    // Get data from PROFILE
     $stmtProfile = $conn->prepare("
     SELECT location, contactMethod, vehicle, dob, gender, linkedin, emergencyName, emergencyPhone, favoriteMusic, carpoolPrefs, bio
     FROM PROFILE 
@@ -37,6 +41,7 @@ include '../PHP/db.php';
     $stmtProfile->execute([':userID' => $_SESSION['userID']]);
     $profile = $stmtProfile->fetch(PDO::FETCH_ASSOC);
 
+    // Variables
     $userID         = $user['userID']?? 'N/A';
     $studentID      = $user['studentID']?? 'N/A';
     $firstName      = $user['firstName']?? 'N/A';

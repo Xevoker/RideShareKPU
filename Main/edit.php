@@ -1,10 +1,11 @@
 <?php
+//Session start and database, get userID
 require '../PHP/sessioncheck.php';
 require '../PHP/db.php';
-
 $userID = $_SESSION['userID'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    //Variables
     $dob = $_POST['dob'] ?? '';
     $gender = $_POST['gender'] ?? '';
     $contactMethod = $_POST['contactMethod'] ?? '';
@@ -35,12 +36,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             bio=excluded.bio
     ");
     $stmt->execute([$userID, $dob, $gender, $contactMethod, $location, $vehicle, $linkedin, $emergencyName, $emergencyPhone, $favoriteMusic, $carpoolPrefs, $bio]);
-
     header("Location: profile.php");
     exit();
 }
 
-// Fetch user basic info
+// Fetch data from user
 $stmtUser = $conn->prepare("SELECT firstName, lastName, email FROM USER WHERE userID = ?");
 $stmtUser->execute([$userID]);
 $userData = $stmtUser->fetch(PDO::FETCH_ASSOC);

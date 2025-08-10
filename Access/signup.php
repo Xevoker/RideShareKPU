@@ -1,13 +1,16 @@
 <?php
+//Destoy the session to ensure no data overlap and restarts the session
 session_start();
 session_unset();
 session_destroy();
 session_start();
+
+// PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-
 require '../vendor/autoload.php';
 if ($_SERVER["REQUEST_METHOD"] === "POST"){
+  // Get inputted data
   $_SESSION['studentID'] = $_POST['studentID'];
   $_SESSION['email'] = $_POST['email'];
   $_SESSION['firstName'] = $_POST['firstName'];
@@ -23,8 +26,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
   $_SESSION['password'] = $_POST['password']; 
   $_SESSION['confirmPassword'] = $_POST['confirmPassword']; 
   $email = $_POST['email'];
-$mail = new PHPMailer(true);
+  $mail = new PHPMailer(true);
 
+//Random code and send as mail
 try {
     $code = rand(10000000, 99999999); // 8-digit code
     $_SESSION['verify_code'] = $code;
@@ -34,7 +38,7 @@ try {
     $mail->Host = 'smtp.gmail.com';
     $mail->SMTPAuth = true;
     $mail->Username = 'ridesharekpu@gmail.com';       // Your Gmail
-    $mail->Password = 'jabcgdnvvihknpgi';             // App Password (no spaces!)
+    $mail->Password = 'jabcgdnvvihknpgi';             // App Password
     $mail->SMTPSecure = 'tls';
     $mail->Port = 587;
 

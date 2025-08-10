@@ -1,7 +1,7 @@
 <?php
+//Session start and database, get userID
 require '../PHP/sessioncheck.php';
 require '../PHP/db.php';
-
 ?>
 
 <!DOCTYPE html>

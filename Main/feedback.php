@@ -1,7 +1,9 @@
 <?php
+//Session start and database
 require '../PHP/sessioncheck.php';
 require '../PHP/db.php';
 
+// No carpoolID
 if (empty($_SESSION['carpoolID'])) {
     die("You cannot leave a review because you have not actively participating in a ride.");
 }
@@ -9,6 +11,7 @@ if (empty($_SESSION['carpoolID'])) {
 $carpoolID = $_SESSION['carpoolID'];
 $userID    = $_SESSION['userID'];
 
+//Get the id for the driver
 $stmt = $conn->prepare("SELECT driverID FROM CARPOOL WHERE carpoolID = :cid");
 $stmt->execute([':cid' => $carpoolID]);
 $driver = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -19,6 +22,7 @@ if (!$driver) {
 
 $driverID = $driver['driverID'];
 
+// Send feedback to the database
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $feedbackText = trim($_POST['feedbackText'] ?? '');
     $rating       = intval($_POST['rating'] ?? 0);

@@ -1,10 +1,12 @@
 <?php
+//Session start and database
 require '../PHP/sessioncheck.php';
 require '../PHP/db.php';
 
 $userID = $_SESSION['userID'];
 $carpoolID = $_GET['carpoolID'] ?? 0;
 
+// Gets the message, the user name, and timestamp
 $sql = "SELECT 
             m.messageID, 
             m.userID, 

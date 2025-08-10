@@ -1,4 +1,5 @@
 <?php
+//Session start and database
 session_start();
 require '../PHP/db.php';
 

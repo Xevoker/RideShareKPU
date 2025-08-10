@@ -52,6 +52,7 @@ function saveMessages() {
 // ============================
 // RENDER STATS
 // ============================
+/*
 function updateStatsCards() {
   const statsCards = document.querySelectorAll(".stats-cards .card");
   if (!statsCards.length) return;
@@ -73,6 +74,7 @@ function updateStatsCards() {
   if (statsCards[1]) statsCards[1].querySelector(".number").textContent = offeredCount;
   if (statsCards[2]) statsCards[2].querySelector(".number").textContent = takenCount;
 }
+*/
 
 // ============================
 // RENDER UPCOMING RIDES
@@ -154,7 +156,7 @@ function addActivity(text) {
   if (activities.length > 20) activities.pop();
   saveActivities();
   renderRecentActivities();
-  updateStatsCards();
+  //updateStatsCards();
 }
 
 // ============================
@@ -162,7 +164,7 @@ function addActivity(text) {
 // ============================
 document.addEventListener("DOMContentLoaded", () => {
   refreshUserName();
-  updateStatsCards();
+  //updateStatsCards();
   renderUpcomingRides();
   renderRecentActivities();
 });
@@ -173,7 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
 window.addEventListener("storage", (event) => {
   if (event.key === "rides") {
     rides = JSON.parse(localStorage.getItem("rides")) || [];
-    updateStatsCards();
+    //updateStatsCards();
     renderUpcomingRides();
   }
   if (event.key === "rideShareActivities") {
@@ -182,7 +184,7 @@ window.addEventListener("storage", (event) => {
   }
   if (event.key === "messages") {
     messages = JSON.parse(localStorage.getItem("messages")) || [];
-    updateStatsCards();
+    //updateStatsCards();
   }
 });
 
@@ -193,16 +195,12 @@ setInterval(() => {
   rides = JSON.parse(localStorage.getItem("rides")) || [];
   activities = JSON.parse(localStorage.getItem("rideShareActivities")) || [];
   refreshUserName();
-  updateStatsCards();
+  //updateStatsCards();
   renderUpcomingRides();
   renderRecentActivities();
 }, 5000);
 document.addEventListener('DOMContentLoaded', () => {
 const userStr = localStorage.getItem('currentUser');
-if (!userStr) {
-  window.location.href = 'login.html';
-  return;
-}
 const user = JSON.parse(userStr);
 
   // 1. Update User Name
@@ -224,9 +222,9 @@ const user = JSON.parse(userStr);
   const upcomingRidesOffered = ridesOffered.filter(isUpcoming);
 
   // Update stats numbers
-  document.getElementById('upcomingRidesCount').textContent = upcomingRidesTaken.length + upcomingRidesOffered.length;
-  document.getElementById('ridesOfferedCount').textContent = ridesOffered.length;
-  document.getElementById('ridesTakenCount').textContent = ridesTaken.length;
+  //document.getElementById('upcomingRidesCount').textContent = upcomingRidesTaken.length + upcomingRidesOffered.length;
+  //document.getElementById('ridesOfferedCount').textContent = ridesOffered.length;
+  //document.getElementById('ridesTakenCount').textContent = ridesTaken.length;
 
   // 3. Populate Upcoming Rides Table
   const tableBody = document.getElementById('upcomingRidesTableBody');
@@ -283,3 +281,4 @@ const user = JSON.parse(userStr);
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 });
+
