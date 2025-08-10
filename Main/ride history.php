@@ -1,3 +1,9 @@
+<?php
+//Session start and database
+require '../PHP/sessioncheck.php';
+require '../PHP/db.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,14 +24,14 @@
     <nav>
       <ul>
         <li><a href="dashboard.php"aria-label="Dashboard">Dashboard</a></li>
-        <li><a href="join.html" aria-label="Join Ride">Join Ride</a></li>
+        <li><a href="join.php" aria-label="Join Ride">Join Ride</a></li>
         <li><a href="offer.php" aria-label="Offer Ride">Offer Ride</a></li>
         <li><a href="find.php" aria-label="Find Ride">Find Ride</a></li>
         <li><a href="profile.php" aria-label="Profile">Profile</a></li>
-        <li><a href="messages.html" aria-label="Messages">Messages</a></li>
-        <li><a href="ride history.html" aria-label="Ride History">Ride History</a></li>
-        <li><a href="feedback.html" aria-label="User Feedback">Feedback</a></li>
-        <li><a href="settings.html"aria-label="Settings">Settings</a></li>
+        <li><a href="messages.php" aria-label="Messages">Messages</a></li>
+        <li><a href="ride history.php" aria-label="Ride History">Ride History</a></li>
+        <li><a href="feedback.php" aria-label="User Feedback">Feedback</a></li>
+        <li><a href="settings.php"aria-label="Settings">Settings</a></li>
         <li><a href="logout.php" aria-label="Logout">Logout</a></li>
       </ul>
     </nav>
@@ -81,57 +87,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const statusFilter = document.getElementById("statusFilter");
   const monthFilter = document.getElementById("monthFilter");
 
-  function loadRides() {
-    rideList.innerHTML = "";
+  fetch("../PHP/ride_data.php")
+    .then(res => res.json())
+    .then(allRides => {
+      // Fill month dropdown
+      const uniqueMonths = [...new Set(allRides.map(r => r.date.slice(0, 7)))];
+      monthFilter.innerHTML = `<option value="all">All</option>` +
+        uniqueMonths.map(m => `<option value="${m}">${formatMonth(m)}</option>`).join("");
 
-    // Load offered rides
-    const offeredRides = JSON.parse(localStorage.getItem("rides") || "[]");
+      renderRides(allRides);
 
-    // Load joined ride
-    const joinedRide = JSON.parse(localStorage.getItem("joinedRide") || "null");
-
-    let allRides = [];
-
-    // Add offered rides
-    offeredRides.forEach(ride => {
-      allRides.push({
-        type: "offered",
-        from: ride.from,
-        to: ride.to,
-        date: ride.date,
-        time: ride.time,
-        seats: ride.seats,
-        postedAt: ride.postedAt,
-        notes: ride.notes || ""
-      });
-    });
-
-    // Add joined ride
-    if (joinedRide) {
-      allRides.push({
-        type: "joined",
-        from: joinedRide.from,
-        to: joinedRide.to,
-        date: joinedRide.date,
-        time: joinedRide.time,
-        seats: 1,
-        postedAt: new Date().toLocaleString(),
-        notes: "You joined this ride."
-      });
-    }
-
-    // Fill month dropdown dynamically
-    const uniqueMonths = [...new Set(allRides.map(r => r.date.slice(0, 7)))];
-    monthFilter.innerHTML = `<option value="all">All</option>` +
-      uniqueMonths.map(m => `<option value="${m}">${formatMonth(m)}</option>`).join("");
-
-    // Render rides
-    renderRides(allRides);
-
-    // Filters
-    statusFilter.addEventListener("change", () => renderRides(allRides));
-    monthFilter.addEventListener("change", () => renderRides(allRides));
-  }
+      statusFilter.addEventListener("change", () => renderRides(allRides));
+      monthFilter.addEventListener("change", () => renderRides(allRides));
+  });
 
   function renderRides(allRides) {
     rideList.innerHTML = "";

@@ -1,12 +1,13 @@
 <?php
+//Session start and database
 session_start();
-
 if (!isset($_SESSION['userID'])) {
     header("Location: ../Access/login.php");
     exit();
 }
 include '../PHP/db.php';
 
+  // Get data from USER 
   $stmt = $conn->prepare("SELECT userID, studentID, firstName, lastName, email, userType, licenseNumber, street, city, postalCode, preferences, dateJoined, isActive, averageRating, createdAt, updatedAt, userPassword
   FROM USER WHERE userID = :userID");
   if (!$stmt) {
@@ -15,7 +16,8 @@ include '../PHP/db.php';
     }
     $stmt->execute([':userID' => $_SESSION['userID']]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
+  
+  // Get data from PHONE 
   $stmt2 = $conn->prepare("SELECT phoneNumber
   FROM PHONE WHERE userID = :userID");
   if (!$stmt2) {
@@ -24,24 +26,39 @@ include '../PHP/db.php';
     }
     $stmt2->execute([':userID' => $_SESSION['userID']]);
     $user2 = $stmt2->fetch(PDO::FETCH_ASSOC);
-    $userID         = $user['userID'];
-    $studentID      = $user['studentID'];
-    $firstName      = $user['firstName'];
-    $lastName       = $user['lastName'];
-    $phoneNumber    = $user2['phoneNumber'];
-    $email          = $user['email'];
-    $userType       = $user['userType'];
-    $licenseNumber  = $user['licenseNumber'];
-    $street         = $user['street'];
-    $city           = $user['city'];
-    $postalCode     = $user['postalCode'];
-    $preferences    = $user['preferences'];
-    $dateJoined     = $user['dateJoined'];
-    $isActive       = $user['isActive'];
-    $averageRating  = $user['averageRating'];
-    $createdAt      = $user['createdAt'];
-    $updatedAt      = $user['updatedAt'];
-    $userPassword   = $user['userPassword'];
+
+    // Gets the user rating
+    $stmt3 = $conn->prepare("SELECT AVG(rating) AS totalrating FROM RATE WHERE driverID = :userID");
+    $stmt3->execute([':userID' => $_SESSION['userID']]);
+    $avg = $stmt3->fetch(PDO::FETCH_ASSOC);
+
+    // Get data from PROFILE
+    $stmtProfile = $conn->prepare("
+    SELECT location, contactMethod, vehicle, dob, gender, linkedin, emergencyName, emergencyPhone, favoriteMusic, carpoolPrefs, bio
+    FROM PROFILE 
+    WHERE userID = :userID
+    ");
+    $stmtProfile->execute([':userID' => $_SESSION['userID']]);
+    $profile = $stmtProfile->fetch(PDO::FETCH_ASSOC);
+
+    // Variables
+    $userID         = $user['userID']?? 'N/A';
+    $studentID      = $user['studentID']?? 'N/A';
+    $firstName      = $user['firstName']?? 'N/A';
+    $lastName       = $user['lastName']?? 'N/A';
+    $phoneNumber    = $user2['phoneNumber']?? 'N/A';
+    $email          = $user['email']?? 'N/A';
+    $createdAt      = $user['createdAt']?? 'N/A';
+    $rating         = $avg['totalrating']?? 'N/A';
+    $location       = $profile['location'] ?? 'N/A';
+    $contactMethod  = $profile['contactMethod'] ?? 'N/A';
+    $vehicle        = $profile['vehicle'] ?? 'N/A';
+    $dob            = $profile['dob'] ?? 'N/A';
+    $gender         = $profile['gender'] ?? 'N/A';
+    $linkedin       = $profile['linkedin'] ?? 'N/A';
+    $emergencyName  = $profile['emergencyName'] ?? 'N/A';
+    $emergencyPhone = $profile['emergencyPhone'] ?? 'N/A';
+    $carpoolPrefs   = $profile['carpoolPrefs'] ?? 'N/A';
 ?>
 
 <!DOCTYPE html>
@@ -73,14 +90,14 @@ include '../PHP/db.php';
     <nav>
       <ul>
        <li><a href="dashboard.php"aria-label="Dashboard">Dashboard</a></li>
-        <li><a href="join.html" aria-label="Join Ride">Join Ride</a></li>
+        <li><a href="join.php" aria-label="Join Ride">Join Ride</a></li>
         <li><a href="offer.php" aria-label="Offer Ride">Offer Ride</a></li>
         <li><a href="find.php" aria-label="Find Ride">Find Ride</a></li>
         <li><a href="profile.php" aria-label="Profile">Profile</a></li>
-        <li><a href="messages.html" aria-label="Messages">Messages</a></li>
-        <li><a href="ride history.html" aria-label="Ride History">Ride History</a></li>
-        <li><a href="feedback.html" aria-label="User Feedback">Feedback</a></li>
-        <li><a href="settings.html"aria-label="Settings">Settings</a></li>
+        <li><a href="messages.php" aria-label="Messages">Messages</a></li>
+        <li><a href="ride history.php" aria-label="Ride History">Ride History</a></li>
+        <li><a href="feedback.php" aria-label="User Feedback">Feedback</a></li>
+        <li><a href="settings.php"aria-label="Settings">Settings</a></li>
         <li><a href="logout.php" aria-label="Logout">Logout</a></li>
       </ul>
     </nav>
@@ -104,8 +121,10 @@ include '../PHP/db.php';
       <input type="file" id="profilePicInput" accept="image/*" />
 
       <div class="profile-details">
-  
+        
+        <p class="profile-role"><?php echo htmlspecialchars($firstName); ?> <?php echo htmlspecialchars($lastName); ?></p>
         <p class="profile-role">🚗 Verified Driver & Community Helper</p>
+        <p class="profile-role"><?php echo htmlspecialchars($rating); ?> Star Rating</p>
         <p class="profile-bio" contenteditable="true" id="editableBio" aria-label="User biography"></p>
         <button id="saveBioBtn" class="btn-action" style="display:none;">Save Bio</button>
       </div>
@@ -114,23 +133,24 @@ include '../PHP/db.php';
     <section class="profile-info">
       <h2>Personal Information</h2>
       <div class="info-grid">
-        <div class="info-item"><strong>Email:</strong> <span id="infoEmail"></span></div>
-        <div class="info-item"><strong>Phone:</strong> <span id="infoPhone"></span></div>
-        <div class="info-item"><strong>Location:</strong> <span id="infoLocation"></span></div>
-        <div class="info-item"><strong>Member Since:</strong> <span id="infoMemberSince"></span></div>
-        <div class="info-item"><strong>Preferred Contact:</strong> <span id="infoPreferredContact"></span></div>
-        <div class="info-item"><strong>Vehicle:</strong> <span id="infoVehicle"></span></div>
-        <div class="info-item"><strong>Date of Birth:</strong> <span id="infoDOB"></span></div>
-        <div class="info-item"><strong>Gender:</strong> <span id="infoGender"></span></div>
-        <div class="info-item"><strong>LinkedIn:</strong> <a href="#" id="infoLinkedIn" target="_blank">Not set</a></div>
-        <div class="info-item"><strong>Emergency Contact Name:</strong> <span id="infoEmergencyName"></span></div>
-        <div class="info-item"><strong>Emergency Contact Phone:</strong> <span id="infoEmergencyPhone"></span></div>
-        <div class="info-item"><strong>Carpool Preferences:</strong> <span id="infoCarpoolPrefs"></span></div>
+        <div class="info-item"><strong>Email:</strong> <?php echo htmlspecialchars($email); ?></div>
+        <div class="info-item"><strong>Student ID:</strong> <br> <?php echo htmlspecialchars($studentID); ?></div>
+        <div class="info-item"><strong>Phone:</strong><br> <?php echo htmlspecialchars($phoneNumber); ?></span></div>
+        <div class="info-item"><strong>Location:</strong><br><br> <?php echo htmlspecialchars($location); ?> </div>
+        <div class="info-item"><strong>Member Since:</strong><br><?php echo htmlspecialchars($createdAt); ?></div>
+        <div class="info-item"><strong>Preferred Contact:</strong><br> <?php echo htmlspecialchars($contactMethod); ?></div>
+        <div class="info-item"><strong>Vehicle:</strong><br> <?php echo htmlspecialchars($vehicle); ?></div>
+        <div class="info-item"><strong>Date of Birth:</strong><br> <?php echo htmlspecialchars($dob); ?></div>
+        <div class="info-item"><strong>Gender:</strong><br> <?php echo htmlspecialchars($gender); ?></div>
+        <div class="info-item"><strong>LinkedIn:</strong> <a href="#" id="infoLinkedIn" target="_blank"><br> <?php echo htmlspecialchars($linkedin); ?></a></div>
+        <div class="info-item"><strong>Emergency Contact Name:</strong><br> <?php echo htmlspecialchars($emergencyName); ?></div>
+        <div class="info-item"><strong>Emergency Contact Phone:</strong><br> <?php echo htmlspecialchars($emergencyPhone); ?></div>
+        <div class="info-item"><strong>Carpool Preferences:</strong><br> <?php echo htmlspecialchars($carpoolPrefs); ?></div>
       </div>
       <div class="edit-profile-btn-wrapper">
-        <a href="edit.html" class="btn-action edit-profile-btn">Edit Profile</a>
+        <a href="edit.php" class="btn-action edit-profile-btn">Edit Profile</a>
       </div>
-      <a href="ride history.html" class="btn-action view-history-btn">View Ride History</a>
+      <a href="ride history.php" class="btn-action view-history-btn">View Ride History</a>
     </section>
 
     <section class="achievements">
@@ -155,9 +175,9 @@ include '../PHP/db.php';
 
     <section class="profile-settings">
       <h2>Account Settings</h2>
-      <a href="change password.html" class="btn-action">Change Password</a>
-      <a href="privacy.html" class="btn-action">Privacy Options</a>
-      <a href="logout.html" class="btn-action">Logout</a>
+      <a href="change password.php" class="btn-action">Change Password</a>
+      <a href="privacy.php" class="btn-action">Privacy Options</a>
+      <a href="logout.php" class="btn-action">Logout</a>
     </section>
   </main>
 <script>
@@ -174,7 +194,7 @@ include '../PHP/db.php';
     const profileData = localStorage.getItem('currentUser');
 
     // if (!profileData || profileData === "null") {
-    //   window.location.href = "login.html";
+    //   window.location.href = "login.php";
     //   return;
     // }
 
@@ -183,7 +203,7 @@ include '../PHP/db.php';
     // } catch (e) {
     //   console.error("Failed to parse currentUser from localStorage", e);
     //   localStorage.removeItem('currentUser');
-    //   window.location.href = "login.html";
+    //   window.location.href = "login.php";
     //   return;
     // }
 

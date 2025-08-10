@@ -1,3 +1,9 @@
+<?php
+//Session start and database
+require '../PHP/sessioncheck.php';
+require '../PHP/db.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,14 +43,14 @@
     <nav>
       <ul>
         <li><a href="dashboard.php"aria-label="Dashboard">Dashboard</a></li>
-        <li><a href="join.html" aria-label="Join Ride">Join Ride</a></li>
+        <li><a href="join.php" aria-label="Join Ride">Join Ride</a></li>
         <li><a href="offer.php" aria-label="Offer Ride">Offer Ride</a></li>
         <li><a href="find.php" aria-label="Find Ride">Find Ride</a></li>
         <li><a href="profile.php" aria-label="Profile">Profile</a></li>
-        <li><a href="messages.html" aria-label="Messages">Messages</a></li>
-        <li><a href="ride history.html" aria-label="Ride History">Ride History</a></li>
-        <li><a href="feedback.html" aria-label="User Feedback">Feedback</a></li>
-        <li><a href="settings.html"aria-label="Settings">Settings</a></li>
+        <li><a href="messages.php" aria-label="Messages">Messages</a></li>
+        <li><a href="ride history.php" aria-label="Ride History">Ride History</a></li>
+        <li><a href="feedback.php" aria-label="User Feedback">Feedback</a></li>
+        <li><a href="settings.php"aria-label="Settings">Settings</a></li>
         <li><a href="logout.php" aria-label="Logout">Logout</a></li>
       </ul>
     </nav>
@@ -92,15 +98,7 @@
   </main>
 
   <script>
-    // Dummy user list
-    const users = [
-      { name: 'Emily R.', lastMsg: 'Thanks for the ride! 🚗', avatar: 'a.jpg' },
-      { name: 'Michael K.', lastMsg: 'See you at Langley Campus.', avatar: 'a.jpg' },
-      { name: 'Sarah L.', lastMsg: 'Is the ride still available?', avatar: 'a.jpg' },
-      { name: 'Alex P.', lastMsg: 'Let’s plan for tomorrow.', avatar: 'a.jpg' },
-      { name: 'Nina S.', lastMsg: 'Can you pick me up at 3?', avatar: 'a.jpg' }
-    ];
-
+  
     const conversationsEl = document.getElementById('conversations');
     const chatMessagesEl = document.getElementById('chatMessages');
     const chatNameEl = document.getElementById('chatName');
@@ -110,90 +108,101 @@
     const totalMessagesCountEl = document.getElementById('totalMessagesCount');
 
     let activeUser = null;
+    let activeCarpoolID = null;
+    let myUserID = <?php echo json_encode($_SESSION['userID']); ?>;
 
-    // Calculate total messages across all users
-    function getTotalMessages() {
-      return users.reduce((sum, user) => {
-        const msgs = JSON.parse(localStorage.getItem('chat_' + user.name)) || [];
-        return sum + msgs.length;
-      }, 0);
-    }
+    // Load conversations
+    async function loadConversations(filter = '') {
+      try {
+        const res = await fetch('../PHP/mconversation.php');
+        const data = await res.json();
 
-    // Load conversations into the list with message count badge
-    function loadConversations(filter='') {
-      conversationsEl.innerHTML = '';
+        conversationsEl.innerHTML = '';
+        let totalMessages = 0;
 
-      let totalMessages = 0;
+        data
+          .forEach(conv => {
+            totalMessages += conv.totalCount;
+            let lastMsg = conv.lastMsg ? conv.lastMsg : "No messages yet";
+            let rideInfo = `${conv.departureDate} at ${conv.departureTime} → ${conv.destinationAddress}`;
 
-      users
-        .filter(u => u.name.toLowerCase().includes(filter.toLowerCase()))
-        .forEach(u => {
-          const messages = JSON.parse(localStorage.getItem('chat_' + u.name)) || [];
-          totalMessages += messages.length;
+            const div = document.createElement('div');
+            div.className = 'conversation';
+            div.innerHTML = `
+              <img src="../images/a.jpg" class="conv-avatar">
+              <div class="conv-info">
+                <h3>${conv.otherName} <span class="msg-count">${conv.totalCount}</span></h3>
+                <p>${rideInfo}</p>
+                <p><strong>${lastMsg}</strong></p>
+              </div>
+            `;
+            div.addEventListener('click', (event) => openConversation(conv, event));
+            conversationsEl.appendChild(div);
+          });
 
-          const div = document.createElement('div');
-          div.className = 'conversation';
-          div.innerHTML = `
-            <img src="${u.avatar}" class="conv-avatar">
-            <div class="conv-info">
-              <h3>${u.name} <span class="msg-count">${messages.length}</span></h3>
-              <p>${u.lastMsg}</p>
-            </div>`;
-          div.addEventListener('click', (event) => openConversation(u, event));
-          conversationsEl.appendChild(div);
-        });
-
-      totalMessagesCountEl.textContent = `Total messages: ${getTotalMessages()}`;
+        totalMessagesCountEl.textContent = `Total messages: ${totalMessages}`;
+      } catch (err) {
+        console.error('Error loading conversations:', err);
+      }
     }
 
     // Open a conversation
-    function openConversation(user, event) {
-      activeUser = user.name;
+    function openConversation(conv, event) {
+      activeCarpoolID = conv.carpoolID;
       document.querySelectorAll('.conversation').forEach(c => c.classList.remove('active'));
       event.currentTarget.classList.add('active');
 
-      chatNameEl.textContent = user.name;
-      chatAvatarEl.src = user.avatar;
+      chatNameEl.textContent = conv.otherName;
+      chatAvatarEl.src = '../images/a.jpg';
       chatForm.style.display = 'flex';
-      renderMessages(user.name);
+      renderMessages(activeCarpoolID);
     }
 
-    // Render messages from localStorage
-    function renderMessages(userName) {
-      chatMessagesEl.innerHTML = '';
-      const saved = JSON.parse(localStorage.getItem('chat_' + userName)) || [];
-      saved.forEach(m => {
-        const div = document.createElement('div');
-        div.className = 'msg ' + (m.type === 'sent' ? 'sent' : 'received');
-        div.innerHTML = `<p>${m.text}</p><span class="time">${m.time}</span>`;
-        chatMessagesEl.appendChild(div);
-      });
-      chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+    // Render messages
+    async function renderMessages(carpoolID) {
+      try {
+        const res = await fetch(`../PHP/mmessage.php?carpoolID=${carpoolID}`);
+        const messages = await res.json();
+
+        chatMessagesEl.innerHTML = '';
+        messages.forEach(m => {
+          const div = document.createElement('div');
+          div.className = 'msg ' + (m.userID == myUserID ? 'sent' : 'received');
+          div.innerHTML = `<strong>${m.senderName}</strong><p>${m.message}</p><span class="time">${m.timestamp.slice(11, 16)}</span>`;
+          chatMessagesEl.appendChild(div);
+        });
+        chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+      } catch (err) {
+        console.error('Error loading messages:', err);
+      }
     }
 
-    // Handle send message
-    chatForm.addEventListener('submit', (e) => {
+    // Send message
+    chatForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const text = messageInput.value.trim();
-      if(!text || !activeUser) return;
+      if (!text || !activeCarpoolID) return;
 
-      const time = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-      const saved = JSON.parse(localStorage.getItem('chat_' + activeUser)) || [];
-      saved.push({ text, time, type:'sent' });
-      localStorage.setItem('chat_' + activeUser, JSON.stringify(saved));
-      messageInput.value = '';
-      renderMessages(activeUser);
+      try {
+        const res = await fetch('../PHP/msend.php', {
+          method: 'POST',
+          body: JSON.stringify({ carpoolID: activeCarpoolID, text }),
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await res.json();
 
-      // Update lastMsg for user preview and refresh conversations list
-      const user = users.find(u => u.name === activeUser);
-      if(user) {
-        user.lastMsg = text.length > 25 ? text.substring(0, 22) + '...' : text;
+        if (data.success) {
+          messageInput.value = '';
+          renderMessages(activeCarpoolID);
+          loadConversations(document.getElementById('searchUser').value);
+        }
+      } catch (err) {
+        console.error('Error sending message:', err);
       }
-      loadConversations(document.getElementById('searchUser').value);
     });
 
-    // Search user
-    document.getElementById('searchUser').addEventListener('input', (e)=>{
+    // Search
+    document.getElementById('searchUser').addEventListener('input', (e) => {
       loadConversations(e.target.value);
     });
 

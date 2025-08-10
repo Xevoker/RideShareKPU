@@ -1,3 +1,5 @@
+// Original Route planning file - Moved to dashboard.php
+
 class RouteMap {
 
     // sets up properties

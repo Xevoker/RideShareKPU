@@ -1,4 +1,5 @@
 <?php
+// Connection for the SQLite
 try {
     $conn = new PDO("sqlite:" . __DIR__ . "/../data.db");
     // Set error mode to exceptions

@@ -1,3 +1,9 @@
+<?php
+//Session start and database
+require '../PHP/sessioncheck.php';
+require '../PHP/db.php';
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,14 +23,14 @@
     <nav>
       <ul>
         <li><a href="dashboard.php"aria-label="Dashboard">Dashboard</a></li>
-        <li><a href="join.html" aria-label="Join Ride">Join Ride</a></li>
+        <li><a href="join.php" aria-label="Join Ride">Join Ride</a></li>
         <li><a href="offer.php" aria-label="Offer Ride">Offer Ride</a></li>
         <li><a href="find.php" aria-label="Find Ride">Find Ride</a></li>
         <li><a href="profile.php" aria-label="Profile">Profile</a></li>
-        <li><a href="messages.html" aria-label="Messages">Messages</a></li>
-        <li><a href="ride history.html" aria-label="Ride History">Ride History</a></li>
-        <li><a href="feedback.html" aria-label="User Feedback">Feedback</a></li>
-        <li><a href="settings.html"aria-label="Settings">Settings</a></li>
+        <li><a href="messages.php" aria-label="Messages">Messages</a></li>
+        <li><a href="ride history.php" aria-label="Ride History">Ride History</a></li>
+        <li><a href="feedback.php" aria-label="User Feedback">Feedback</a></li>
+        <li><a href="settings.php"aria-label="Settings">Settings</a></li>
         <li><a href="logout.php" aria-label="Logout">Logout</a></li>
     </nav>
   </aside>
@@ -273,10 +279,9 @@
           saveUsers(users);
           localStorage.removeItem('currentUser');
           alert('Account deleted permanently.');
-          window.location.href = 'signup.html'; // redirect to signup or login
+          window.location.href = '../Access/signup.php'; // redirect to signup or login
         }
       });
-    });
   </script>
 </body>
 </html>
