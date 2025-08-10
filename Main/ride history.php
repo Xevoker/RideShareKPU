@@ -69,6 +69,15 @@ require '../PHP/db.php';
             <option value="all">All</option>
           </select>
         </label>
+        <label>
+          <div class="actions">
+          <a href="../PHP/ride-pdf.php" target="_blank">
+              <button class="btn-action">
+                  Download Ride History PDF
+              </button>
+            </a>
+          </div>
+        </label>
       </div>
     </section>
 

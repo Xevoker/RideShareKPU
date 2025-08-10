@@ -146,7 +146,7 @@ if (!empty($destinationSearch)) {
 
     <section class="rides-list" id="ridesList"> 
       <?php if (count($rides) === 0): ?> 
-        <p>No rides found for "<?= htmlspecialchars($destinationSearch) ?>".</p> 
+        <p>No rides found<?= htmlspecialchars($destinationSearch) ?></p> 
           <?php else: ?> 
             <?php foreach ($rides as $ride): ?> 
               <div class="ride-card"> 
