@@ -21,13 +21,13 @@ session_destroy();
     </div>
     <nav>
       <ul>
-        <li><a href="../Landing/ride.html">Home</a></li>
-        <li><a href="../Landing/about.html">About</a></li>
-        <li><a href="../Landing/benefits.html">Benefits</a></li>
-        <li><a href="../Landing/work.html">How It Works</a></li>
-        <li><a href="../Landing/locations.html">Locations</a></li>
-        <li><a href="../Landing/faq.html">FAQ</a></li>
-        <li><a href="../Landing/contact.html">Contact</a></li>
+        <li><a href="../Landing/ride.php">Home</a></li>
+        <li><a href="../Landing/about.php">About</a></li>
+        <li><a href="../Landing/benefits.php">Benefits</a></li>
+        <li><a href="../Landing/work.php">How It Works</a></li>
+        <li><a href="../Landing/locations.php">Locations</a></li>
+        <li><a href="../Landing/faq.php">FAQ</a></li>
+        <li><a href="../Landing/contact.php">Contact</a></li>
       </ul>
     </nav>
   </header>
@@ -46,7 +46,7 @@ session_destroy();
 
   <!-- Footer -->
   <footer>
-    <p>&copy; 2025 RideShare KPU | Built by KPU Students | <a href="contact.html">Contact Us</a></p>
+    <p>&copy; 2025 RideShare KPU | Built by KPU Students | <a href="../Landing/contact.html">Contact Us</a></p>
   </footer>
 </body>
 </html>

@@ -28,6 +28,41 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
       // Successful login
       $_SESSION['userID'] = $id;
       $_SESSION['firstName'] = $firstName;
+      //Get the date
+      $today = date('Y-m-d');
+
+      // Update all rides before today to 'complete'
+      $sql = "UPDATE CARPOOL SET status = 'complete' 
+          WHERE departureDate < :today 
+          AND status != 'complete'";
+
+      $stmt = $conn->prepare($sql);
+      $stmt->execute([':today' => $today]);
+
+      $sql_driver = "SELECT carpoolID FROM CARPOOL
+                   WHERE driverID = :userID AND status = 'offered'
+                   LIMIT 1";
+
+      //Ride check
+      $stmt_driver = $conn->prepare($sql_driver);
+      $stmt_driver->execute([':userID' => $id]);
+      $driverRide = $stmt_driver->fetch(PDO::FETCH_ASSOC);
+
+      if ($driverRide) {
+          $_SESSION['carpoolID'] = $driverRide['carpoolID'];
+      } else {
+          $sql_rider = "SELECT carpoolID FROM RIDE
+                        WHERE riderID = :userID
+                        ORDER BY carpoolID DESC
+                        LIMIT 1";
+          $stmt_rider = $conn->prepare($sql_rider);
+          $stmt_rider->execute([':userID' => $id]);
+          $riderRide = $stmt_rider->fetch(PDO::FETCH_ASSOC);
+          if ($riderRide) {
+              $_SESSION['carpoolID'] = $riderRide['carpoolID'];
+          }
+      }
+
       header("Location: ../Main/dashboard.php");
       exit;
   } else {

@@ -1,26 +1,51 @@
 <?php
 include '../PHP/sessioncheck.php';
-echo '<pre>';
-print_r($_SESSION);
-echo '</pre>';
   $userName = $_SESSION['firstName'];
 
 include '../PHP/db.php'; 
 
 $carpoolID = $_SESSION['carpoolID'] ?? null;
-
+$userID = $_SESSION['userID'];
 $stmt = $conn->prepare("SELECT originAddress, destinationAddress FROM CARPOOL WHERE carpoolID = :cid");
 $stmt->execute([':cid' => $carpoolID]);
 $carpool = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// if (!$carpool) {
-//     echo "Carpool not found, Join a Carpool to See the Route";
-// }
-// else{
-// $stmt = $conn->prepare("SELECT pickupLocation FROM RIDE WHERE carpoolID = :cid");
-// $stmt->execute([':cid' => $carpoolID]);
-// $pickups = $stmt->fetchAll(PDO::FETCH_COLUMN);
-// }
+  //Upcoming
+  $sqlup = "SELECT COUNT(*) AS total FROM CARPOOL 
+          WHERE driverID = :userID AND status = 'offered'";
+  $stmt = $conn->prepare($sqlup);
+  $stmt->execute([':userID' => $userID]);
+  $row1 = $stmt->fetch(PDO::FETCH_ASSOC);
+
+  $upcomingRides = $row1['total'];
+
+  // Offered 
+  $sqloff = "SELECT COUNT(*) AS total FROM CARPOOL 
+          WHERE driverID = :userID AND status = 'complete'";
+  $stmt = $conn->prepare($sqloff);
+  $stmt->execute([':userID' => $userID]);
+  $row2 = $stmt->fetch(PDO::FETCH_ASSOC);
+
+  $ridesOffered = $row2['total'] ?? 0;
+
+  //taken
+  $sqlta = "SELECT COUNT(*) AS total 
+          FROM RIDE
+          WHERE  riderID = :userID";
+  $stmt = $conn->prepare($sqlta);
+  $stmt->execute([':userID' => $userID]);
+  $row3 = $stmt->fetch(PDO::FETCH_ASSOC);
+
+  $ridesTaken = $row3['total'] ?? 0;
+
+if (!$carpool) {
+
+}
+else{
+$stmt = $conn->prepare("SELECT pickupLocation FROM RIDE WHERE carpoolID = :cid");
+$stmt->execute([':cid' => $carpoolID]);
+$pickups = $stmt->fetchAll(PDO::FETCH_COLUMN);
+}
 ?>
 
 <!DOCTYPE html>
@@ -57,14 +82,14 @@ $carpool = $stmt->fetch(PDO::FETCH_ASSOC);
     <nav>
       <ul>
         <li><a href="dashboard.php"aria-label="Dashboard">Dashboard</a></li>
-        <li><a href="join.html" aria-label="Join Ride">Join Ride</a></li>
+        <li><a href="join.php" aria-label="Join Ride">Join Ride</a></li>
         <li><a href="offer.php" aria-label="Offer Ride">Offer Ride</a></li>
         <li><a href="find.php" aria-label="Find Ride">Find Ride</a></li>
         <li><a href="profile.php" aria-label="Profile">Profile</a></li>
-        <li><a href="messages.html" aria-label="Messages">Messages</a></li>
-        <li><a href="ride history.html" aria-label="Ride History">Ride History</a></li>
-        <li><a href="feedback.html" aria-label="User Feedback">Feedback</a></li>
-        <li><a href="settings.html"aria-label="Settings">Settings</a></li>
+        <li><a href="messages.php" aria-label="Messages">Messages</a></li>
+        <li><a href="ride history.php" aria-label="Ride History">Ride History</a></li>
+        <li><a href="feedback.php" aria-label="User Feedback">Feedback</a></li>
+        <li><a href="settings.php"aria-label="Settings">Settings</a></li>
         <li><a href="logout.php" aria-label="Logout">Logout</a></li>
       </ul>
     </nav>
@@ -91,15 +116,15 @@ $carpool = $stmt->fetch(PDO::FETCH_ASSOC);
    <section class="stats-cards">
       <div class="card">
         <h3>Upcoming Rides</h3>
-        <p class="number">3</p>
+        <p class="number"><?php echo $upcomingRides ?></p>
       </div>
       <div class="card">
         <h3>Rides Offered</h3>
-        <p class="number">5</p>
+        <p class="number"><?php echo $ridesOffered ?></p>
       </div>
       <div class="card">
         <h3>Rides Taken</h3>
-        <p class="number">12</p>
+        <p class="number"><?php echo $ridesTaken ?></p>
       </div>
   
 
@@ -126,7 +151,7 @@ $carpool = $stmt->fetch(PDO::FETCH_ASSOC);
             <td>Alex M.</td>
             <td>2</td>
             <td><span class="status confirmed">Confirmed</span></td>
-            <td><a href="details.html?rideId=1" class="btn-details">Details</a></td>
+            <td><a href="details.php?rideId=1" class="btn-details">Details</a></td>
           </tr>
           <tr>
             <td>July 23, 2025</td>
@@ -135,7 +160,7 @@ $carpool = $stmt->fetch(PDO::FETCH_ASSOC);
             <td>Jamie L.</td>
             <td>1</td>
             <td><span class="status pending">Pending</span></td>
-            <td><a href="details.html?rideId=2" class="btn-details">Details</a></td>
+            <td><a href="details.php?rideId=2" class="btn-details">Details</a></td>
           </tr>
           <tr>
             <td>July 27, 2025</td>
@@ -144,7 +169,7 @@ $carpool = $stmt->fetch(PDO::FETCH_ASSOC);
             <td>Sarah P.</td>
             <td>3</td>
             <td><span class="status cancelled">Cancelled</span></td>
-            <td><a href="details.html?rideId=3" class="btn-details">Details</a></td>
+            <td><a href="details.php?rideId=3" class="btn-details">Details</a></td>
           </tr>
         </tbody>
       </table>
@@ -260,7 +285,7 @@ $carpool = $stmt->fetch(PDO::FETCH_ASSOC);
         <li>Use seat belts at all times.</li>
         <li>Report any suspicious behavior immediately.</li>
       </ul>
-      <a href="learn.html" class="btn-learn-more">Learn More</a>
+      <a href="learn.php" class="btn-learn-more">Learn More</a>
     </section>
 
     <!-- Upcoming Events -->
@@ -290,7 +315,7 @@ $carpool = $stmt->fetch(PDO::FETCH_ASSOC);
 
     <!-- Footer -->
     <footer class="dashboard-footer">
-      &copy; 2025 RideShare KPU — <a href="terms.html">Terms of Service</a> | <a href="privacy.html">Privacy Policy</a>
+      &copy; 2025 RideShare KPU — <a href="terms.php">Terms of Service</a> | <a href="privacy.php">Privacy Policy</a>
       <div class="social-links">
         <a href="#" aria-label="Facebook">👍</a>
         <a href="#" aria-label="Twitter">🐦</a>
@@ -354,6 +379,7 @@ class RouteMap {
           }
         });
       }
+
       // Info calculation
       displayRouteInfo(result) {
         const route = result.routes[0];
@@ -365,8 +391,14 @@ class RouteMap {
           totalDuration += leg.duration.value;
         });
 
+        const totalDistanceKM = totalDistance/1000;
+        const gasCostPerKm = 0.15;
+        const totalCost = totalDistanceKM * gasCostPerKm;
+        const numPeople = this.waypoints.length + 1;
+        const pricePerPerson = (totalCost / numPeople).toFixed(2);
+        
         document.getElementById("route-info").innerText =
-          `Total Distance: ${(totalDistance / 1000).toFixed(2)} km | Total Time: ${(totalDuration / 60).toFixed(1)} mins`;
+          `Total Distance: ${totalDistanceKM.toFixed(2)} km | Total Time: ${(totalDuration / 60).toFixed(1)} mins | Cost per person: $${pricePerPerson}`;
       }
     }
     // Converts address string to LatLng using Geocoder, returns Promise

@@ -16,11 +16,11 @@
     </div>
     <nav>
       <ul>
-        <li><a href="dashboard.html">Dashboard</a></li>
-        <li><a href="profile.html">Profile</a></li>
-        <li><a href="ride history.html">My Rides</a></li>
-        <li><a href="messages.html">Messages</a></li>
-        <li><a href="settings.html" class="active">Settings</a></li>
+        <li><a href="dashboard.php">Dashboard</a></li>
+        <li><a href="profile.php">Profile</a></li>
+        <li><a href="ride history.php">My Rides</a></li>
+        <li><a href="messages.php">Messages</a></li>
+        <li><a href="settings.php" class="active">Settings</a></li>
       </ul>
     </nav>
   </aside>

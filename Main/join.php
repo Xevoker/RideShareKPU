@@ -1,3 +1,8 @@
+<?php
+require '../PHP/sessioncheck.php';
+require '../PHP/db.php';
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -120,10 +125,10 @@
       const selectedRole = rideRole.value;
 
       if (selectedRole === 'driver') {
-        // Redirect to offer.html
+        // Redirect to offer.php
         window.location.href = 'offer.php';
       } else if (selectedRole === 'passenger') {
-        // Redirect to find.html
+        // Redirect to find.php
         window.location.href = 'find.php';
       } else {
         alert('Please select whether you want to drive or ride.');

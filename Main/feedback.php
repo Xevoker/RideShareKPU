@@ -1,3 +1,51 @@
+<?php
+require '../PHP/sessioncheck.php';
+require '../PHP/db.php';
+
+if (empty($_SESSION['carpoolID'])) {
+    die("You cannot leave a review because you have not actively participating in a ride.");
+}
+
+$carpoolID = $_SESSION['carpoolID'];
+$userID    = $_SESSION['userID'];
+
+$stmt = $conn->prepare("SELECT driverID FROM CARPOOL WHERE carpoolID = :cid");
+$stmt->execute([':cid' => $carpoolID]);
+$driver = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$driver) {
+    die("Invalid carpool ID.");
+}
+
+$driverID = $driver['driverID'];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
+    $feedbackText = trim($_POST['feedbackText'] ?? '');
+    $rating       = intval($_POST['rating'] ?? 0);
+    $userName     = trim($_POST['userName'] ?? '');
+
+    if ($feedbackText && $rating >= 1 && $rating <= 5 && $userName) {
+        $insert = $conn->prepare("
+            INSERT INTO RATE (carpoolID, driverID, userID, feedback, rating, reviewerName)
+            VALUES (:carpoolID, :driverID, :userID, :feedback, :rating, :reviewerName)
+        ");
+        $insert->execute([
+            ':carpoolID'   => $carpoolID,
+            ':driverID'    => $driverID,
+            ':userID'      => $userID,
+            ':feedback'    => $feedbackText,
+            ':rating'      => $rating,
+            ':reviewerName'=> $userName
+        ]);
+
+        echo "<script>alert('Thank you for your feedback!');</script>";
+        header("Location: feedback.php");
+    } else {
+        echo "<script>alert('Please fill in all fields and select a valid rating.');</script>";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,14 +63,14 @@
     <nav>
       <ul>
         <li><a href="dashboard.php"aria-label="Dashboard">Dashboard</a></li>
-        <li><a href="join.html" aria-label="Join Ride">Join Ride</a></li>
+        <li><a href="join.php" aria-label="Join Ride">Join Ride</a></li>
         <li><a href="offer.php" aria-label="Offer Ride">Offer Ride</a></li>
         <li><a href="find.php" aria-label="Find Ride">Find Ride</a></li>
         <li><a href="profile.php" aria-label="Profile">Profile</a></li>
-        <li><a href="messages.html" aria-label="Messages">Messages</a></li>
-        <li><a href="ride history.html" aria-label="Ride History">Ride History</a></li>
-        <li><a href="feedback.html" aria-label="User Feedback">Feedback</a></li>
-        <li><a href="settings.html"aria-label="Settings">Settings</a></li>
+        <li><a href="messages.php" aria-label="Messages">Messages</a></li>
+        <li><a href="ride history.php" aria-label="Ride History">Ride History</a></li>
+        <li><a href="feedback.php" aria-label="User Feedback">Feedback</a></li>
+        <li><a href="settings.php"aria-label="Settings">Settings</a></li>
         <li><a href="logout.php" aria-label="Logout">Logout</a></li>
       </ul>
     </nav>
@@ -40,7 +88,7 @@
     <section class="user-feedback">
       <h2>Give Your Feedback</h2>
 
-      <form id="feedbackForm" aria-label="Feedback form">
+      <form id="feedbackForm" method="post" action="" aria-label="Feedback form">
         <label for="feedbackText">Your Feedback</label>
         <textarea id="feedbackText" name="feedbackText" rows="6" placeholder="Write your feedback here..." required></textarea>
 
@@ -61,7 +109,7 @@
         <label for="userName">Your Name</label>
         <input type="text" id="userName" name="userName" placeholder="Enter your name" required />
 
-        <button type="submit" class="btn-submit">Submit Feedback</button>
+        <button type="submit"  name="submit" class="btn-submit">Submit Feedback</button>
       </form>
 
       <div class="thank-you-message" role="alert" aria-live="polite" style="display:none;">
@@ -84,25 +132,16 @@
     const thankYou = document.querySelector('.thank-you-message');
 
     form.addEventListener('submit', (e) => {
-      e.preventDefault();
       // Collect form data
       const feedback = form.feedbackText.value.trim();
-      const rating = form.rating.value;
+      const rating = document.querySelector('input[name="rating"]:checked')?.value || '';
       const userName = form.userName.value.trim();
 
       if (!feedback || !rating || !userName) {
         alert("Please fill out all fields and select a rating.");
+        e.preventDefault();
         return;
       }
-
-      // You could send this data to a server here...
-
-      form.reset();
-      thankYou.style.display = 'block';
-
-      setTimeout(() => {
-        thankYou.style.display = 'none';
-      }, 4000);
     });
   </script>
 </body>

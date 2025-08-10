@@ -6,22 +6,23 @@ if (!isset($_SESSION['userID'])) {
     exit();
 }
 include '../PHP/db.php';
-if ($_SERVER["REQUEST_METHOD"] === "POST"){
+
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
 $driverID = $_SESSION['userID'] ?? null;
 $originAddress = trim($_POST['startaddress'] ?? '');
 $destinationAddress = trim($_POST['endaddress'] ?? '');
 $departureDate = $_POST['date'] ?? '';
 $departureTime = $_POST['time'] ?? '';
+$notes = $_POST['notes'] ?? null;
 $availableSeats = intval($_POST['seats'] ?? 0);
 $status = "offered";
-$distance = null; // or calculate it
 
 if ($driverID && $originAddress && $destinationAddress && $departureDate && $departureTime && $availableSeats > 0) {
 
     $sql = "INSERT INTO CARPOOL 
-            (driverID, originAddress, destinationAddress, departureDate, departureTime, availableSeats, status, distance) 
+            (driverID, originAddress, destinationAddress, departureDate, departureTime, availableSeats, status, notes) 
             VALUES 
-            (:driverID, :originAddress, :destinationAddress, :departureDate, :departureTime, :availableSeats, :status, :distance)";
+            (:driverID, :originAddress, :destinationAddress, :departureDate, :departureTime, :availableSeats, :status, :notes)";
 
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
@@ -29,7 +30,7 @@ if ($driverID && $originAddress && $destinationAddress && $departureDate && $dep
         die("Error preparing SQL statement: " . implode(" | ", $errorInfo));
     }
 
-    $stmt->execute([
+    $result = $stmt->execute([
         ':driverID'         => $driverID,
         ':originAddress'    => $originAddress,
         ':destinationAddress' => $destinationAddress,
@@ -37,7 +38,7 @@ if ($driverID && $originAddress && $destinationAddress && $departureDate && $dep
         ':departureTime'    => $departureTime,
         ':availableSeats'   => $availableSeats,
         ':status'           => $status,
-        ':distance'         => $distance,
+        ':notes'         => $notes
     ]);
 
     $carpoolID = $conn->lastInsertId();
@@ -49,6 +50,24 @@ if ($driverID && $originAddress && $destinationAddress && $departureDate && $dep
 } else {
     echo "Missing required fields or invalid data.";
 }
+}
+$offeredRides = [];
+$driverID = $_SESSION['userID'];
+$sql = "SELECT * FROM CARPOOL WHERE driverID = :driverID AND status = 'offered' ORDER BY departureDate, departureTime";
+$stmt = $conn->prepare($sql);
+$stmt->execute([':driverID' => $driverID]);
+$offeredRides = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+if (isset($_POST['cancel'])) {
+    $cancelID = intval($_POST['cancel']);
+    $driverID = $_SESSION['userID'];
+
+    $stmt = $conn->prepare("DELETE FROM CARPOOL WHERE carpoolID = :id AND driverID = :driverID");
+    $stmt->execute([
+        ':id' => $cancelID,
+        ':driverID' => $driverID
+    ]);
+     header("Location: offer.php");
 }
 ?>
 
@@ -93,14 +112,14 @@ if ($driverID && $originAddress && $destinationAddress && $departureDate && $dep
     <nav>
       <ul>
         <li><a href="dashboard.php"aria-label="Dashboard">Dashboard</a></li>
-        <li><a href="join.html" aria-label="Join Ride">Join Ride</a></li>
+        <li><a href="join.php" aria-label="Join Ride">Join Ride</a></li>
         <li><a href="offer.php" aria-label="Offer Ride">Offer Ride</a></li>
         <li><a href="find.php" aria-label="Find Ride">Find Ride</a></li>
         <li><a href="profile.php" aria-label="Profile">Profile</a></li>
-        <li><a href="messages.html" aria-label="Messages">Messages</a></li>
-        <li><a href="ride history.html" aria-label="Ride History">Ride History</a></li>
-        <li><a href="feedback.html" aria-label="User Feedback">Feedback</a></li>
-        <li><a href="settings.html"aria-label="Settings">Settings</a></li>
+        <li><a href="messages.php" aria-label="Messages">Messages</a></li>
+        <li><a href="ride history.php" aria-label="Ride History">Ride History</a></li>
+        <li><a href="feedback.php" aria-label="User Feedback">Feedback</a></li>
+        <li><a href="settings.php"aria-label="Settings">Settings</a></li>
         <li><a href="logout.php" aria-label="Logout">Logout</a></li>
       </ul>
     </nav>
@@ -126,29 +145,24 @@ if ($driverID && $originAddress && $destinationAddress && $departureDate && $dep
     </section>
 
     <section class="offer-ride-form">
-      <form id="rideForm">
-        <div class="form-group">
-          <label for="postalFrom">From (Postal Code)</label>
-          <input
+      <form id="rideForm" method="POST" action="">
+        <label for="startaddress">From (Address)</label>
+        <input
             type="text"
-            id="postalFrom"
-            name="postalFrom"
-            placeholder="Enter starting postal code (e.g. V3W 1A1)"
-            pattern="[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d"
-            title="Enter a valid Canadian postal code"
+            id="startaddress"
+            name="startaddress"
+            placeholder="Enter starting address"
             required
           />
         </div>
 
         <div class="form-group">
-          <label for="postalTo">To (Postal Code)</label>
+          <label for="endaddress">To (Address)</label>
           <input
             type="text"
-            id="postalTo"
-            name="postalTo"
-            placeholder="Enter destination postal code (e.g. V6T 1Z4)"
-            pattern="[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d"
-            title="Enter a valid Canadian postal code"
+            id="endaddress"
+            name="endaddress"
+            placeholder="Enter destination address"
             required
           />
         </div>
@@ -178,150 +192,60 @@ if ($driverID && $originAddress && $destinationAddress && $departureDate && $dep
         </div>
 
         <div class="form-actions">
-          <button type="submit" class="btn-action">Post Ride</button>
-          <a href="dashboard.html" class="btn-cancel">Cancel</a>
+          <button type="submit" name="submit" class="btn-action">Post Ride</button>
+          <a href="dashboard.php" class="btn-cancel">Cancel</a>
         </div>
       </form>
     </section>
 
     <section class="rides-list">
       <h2>Your Offered Rides</h2>
-      <ul id="ridesContainer"></ul>
+      <ul id="ridesContainer">
+      <?php if (empty($offeredRides)): ?>
+          <li>No rides offered yet.</li>
+        <?php else: ?>
+          <?php foreach ($offeredRides as $ride): ?>
+            <div style="background-color: white;">
+              <strong><?= htmlspecialchars($ride['originAddress']) ?> ➡️ <?= htmlspecialchars($ride['destinationAddress']) ?></strong><br>
+              Date: <?= htmlspecialchars($ride['departureDate']) ?> | Time: <?= htmlspecialchars($ride['departureTime']) ?> | Seats: <?= htmlspecialchars($ride['availableSeats']) ?><br>
+              <?php if (!empty($ride['notes'])): ?>
+                Notes: <?= htmlspecialchars($ride['notes']) ?><br>
+              <?php endif; ?>
+              <em>Posted on: <?= htmlspecialchars($ride['createdDate']) ?></em>
+              <form method="POST" style="display:inline;">
+                <input type="hidden" name="cancel" value="<?= $ride['carpoolID'] ?>">
+                <button type="submit" onclick="return confirm('Are you sure you want to cancel this ride?');">
+                Cancel Ride
+                </button>
+              </form>
+              </div>
+          <?php endforeach; ?>
+        <?php endif; ?>
+      </ul>
     </section>
   </main>
-
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1J-oGI6bSoPOCz_Gu8hYl_spxzgY7-EM&libraries=places"></script>
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // Get current logged-in user name
-      let currentUserName = "Guest";
-      const loggedIn = JSON.parse(localStorage.getItem("loggedInUser"));
-      if (loggedIn && loggedIn.fullname) {
-        currentUserName = loggedIn.fullname;
-      } else {
-        const savedProfile = JSON.parse(localStorage.getItem("rideShareProfile"));
-        if (savedProfile && savedProfile.fullName) {
-          currentUserName = savedProfile.fullName;
-        } else {
-          const savedSession = JSON.parse(localStorage.getItem("rideShareSession"));
-          if (savedSession && savedSession.username) {
-            currentUserName = savedSession.username;
-          }
-        }
-      }
+      document.addEventListener("DOMContentLoaded", () => {
+      let startAutocomplete, endAutocomplete;
 
-      const rideForm = document.getElementById("rideForm");
-      const ridesContainer = document.getElementById("ridesContainer");
-
-      let savedRides = JSON.parse(localStorage.getItem("rides") || "[]");
-
-      // Save rides back to localStorage
-      function saveRides() {
-        localStorage.setItem("rides", JSON.stringify(savedRides));
-      }
-
-      // Render rides offered by current user
-      function renderRides() {
-        ridesContainer.innerHTML = "";
-        const userRides = savedRides.filter(
-          (ride) => ride.driver === currentUserName && ride.status === "offered"
-        );
-        if (userRides.length === 0) {
-          ridesContainer.innerHTML = "<li>No rides offered yet.</li>";
-          return;
-        }
-
-        userRides.forEach((ride) => {
-          const li = document.createElement("li");
-          li.className = "ride-item";
-          li.dataset.id = ride.id;
-         li.innerHTML = `
-  <a href="details.html?id=${ride.id}" style="text-decoration: none; color: inherit;">
-    <strong>${ride.from} ➡️ ${ride.to}</strong><br>
-    Date: ${ride.date} | Time: ${ride.time} | Seats: ${ride.seats}<br>
-    ${ride.notes ? `Notes: ${ride.notes}<br>` : ""}
-    <em>Posted at: ${ride.postedAt}</em>
-  </a><br>
-  <button class="cancel-btn">Cancel Ride</button>
-`;
-          ridesContainer.appendChild(li);
-        });
-      }
-
-      renderRides();
-
-
-      // Validate postal code format
-      function isValidPostalCode(pc) {
-        return /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/.test(pc);
-      }
-
-      // Handle form submit to add ride
-      rideForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-
-        const from = document.getElementById("postalFrom").value.trim().toUpperCase();
-        const to = document.getElementById("postalTo").value.trim().toUpperCase();
-        const date = document.getElementById("date").value;
-        const time = document.getElementById("time").value;
-        const seats = parseInt(document.getElementById("seats").value, 10);
-        const notes = document.getElementById("notes").value.trim();
-
-        // Validate postal codes
-        if (!isValidPostalCode(from)) {
-          alert("Please enter a valid FROM postal code (e.g., V3W 1A1).");
-          return;
-        }
-        if (!isValidPostalCode(to)) {
-          alert("Please enter a valid TO postal code (e.g., V6T 1Z4).");
-          return;
-        }
-
-        if (!date || !time || !seats || seats < 1) {
-          alert("Please fill all required fields correctly.");
-          return;
-        }
-
-        const ride = {
-          id: Date.now().toString(),
-          from,
-          to,
-          date,
-          time,
-          seats,
-          notes,
-          postedAt: new Date().toLocaleString(),
-          driver: currentUserName,
-          status: "offered",
-          passengers: []
-        };
-
-        savedRides.push(ride);
-        saveRides();
-        renderRides();
-
-        alert("Your ride has been posted!");
-        rideForm.reset();
-      });
-
-      // Cancel ride button
-      ridesContainer.addEventListener("click", (e) => {
-        if (e.target.classList.contains("cancel-btn")) {
-          const li = e.target.closest("li");
-          const rideId = li.dataset.id;
-
-          const rideIndex = savedRides.findIndex(
-            (r) => r.id === rideId && r.driver === currentUserName
+      // Google Places Autocomplete
+      function initAutocomplete() {
+          startAutocomplete = new google.maps.places.Autocomplete(
+              document.getElementById("startaddress"),
+              { types: ["geocode"],
+                componentRestrictions: { country: "ca" } 
+              }
           );
-          if (rideIndex === -1) return;
-
-          if (confirm("Are you sure you want to cancel this ride?")) {
-            savedRides.splice(rideIndex, 1);
-            saveRides();
-            renderRides();
-          }
-        }
-      });
-    });
+          endAutocomplete = new google.maps.places.Autocomplete(
+              document.getElementById("endaddress"),
+              { types: ["geocode"],
+                componentRestrictions: { country: "ca" }
+              }
+          );
+      }
+      initAutocomplete();
+  });
   </script>
 </body>
 </html>

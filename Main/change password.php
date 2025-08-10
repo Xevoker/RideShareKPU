@@ -8,11 +8,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $confirmPassword = $_POST['confirmPassword'];
 
     // 1. Fetch current hashed password
-    $stmt = $conn->prepare("SELECT password FROM USER WHERE userID = ?");
+    $stmt = $conn->prepare("SELECT userPassword FROM USER WHERE userID = ?");
     $stmt->execute([$userID]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!$row || !password_verify($currentPassword, $row['password'])) {
+    if (!$row || !password_verify($currentPassword, $row['userPassword'])) {
         $changeMessage = "Current password is incorrect.";
     } elseif ($newPassword !== $confirmPassword) {
         $changeMessage = "New passwords do not match.";
@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         // 2. Hash and update
         $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-        $updateStmt = $conn->prepare("UPDATE USER SET password = ? WHERE userID = ?");
+        $updateStmt = $conn->prepare("UPDATE USER SET userPassword = ? WHERE userID = ?");
         $updateStmt->execute([$hashedPassword, $userID]);
         $changeMessage = "✅ Password successfully updated!";
     }
@@ -45,11 +45,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     <nav>
       <ul>
-        <li><a href="dashboard.html">Dashboard</a></li>
-        <li><a href="profile.html">Profile</a></li>
-        <li><a href="ride history.html">My Rides</a></li>
-        <li><a href="messages.html">Messages</a></li>
-        <li><a href="settings.html">Settings</a></li>
+        <li><a href="dashboard.php">Dashboard</a></li>
+        <li><a href="profile.php">Profile</a></li>
+        <li><a href="ride history.php">My Rides</a></li>
+        <li><a href="messages.php">Messages</a></li>
+        <li><a href="settings.php">Settings</a></li>
       </ul>
     </nav>
   </aside>
@@ -67,19 +67,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <h2>Update Your Password</h2>
       <form action="change password.php" method="POST" id="changePassForm">
         <label for="currentPassword">Current Password</label>
-        <input type="password" id="currentPassword" placeholder="Enter current password" required>
+        <input type="password" name="currentPassword" id="currentPassword" placeholder="Enter current password" required>
 
         <label for="newPassword">New Password</label>
-        <input type="password" id="newPassword" placeholder="Enter new password" required>
+        <input type="password" name="newPassword" id="newPassword" placeholder="Enter new password" required>
 
         <label for="confirmPassword">Confirm New Password</label>
-        <input type="password" id="confirmPassword" placeholder="Re-enter new password" required>
+        <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Re-enter new password" required>
 
         <button type="submit" class="btn-action">Save Changes</button>
       </form>
 
       <p class="forgot-pass">
-        <a href="forgot password.html">Forgot your password?</a>
+        <a href="forgot password.php">Forgot your password?</a>
       </p>
 
       <p class="note">Make sure your new password is at least 8 characters long and secure.</p>
