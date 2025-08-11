@@ -68,6 +68,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
               $_SESSION['carpoolID'] = $riderRide['carpoolID'];
           }
       }
+
+      require_once '../PHP/history.php';
       //Move to the main page
       header("Location: ../Main/dashboard.php");
       exit;

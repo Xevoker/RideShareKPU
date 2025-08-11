@@ -59,6 +59,10 @@ include '../PHP/db.php';
     $emergencyName  = $profile['emergencyName'] ?? 'N/A';
     $emergencyPhone = $profile['emergencyPhone'] ?? 'N/A';
     $carpoolPrefs   = $profile['carpoolPrefs'] ?? 'N/A';
+
+    $stmt = $conn->prepare("SELECT address FROM ADDRESS WHERE userID = :userID");
+    $stmt->execute([':userID' => $_SESSION['userID']]);
+    $addresses = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -146,6 +150,20 @@ include '../PHP/db.php';
         <div class="info-item"><strong>Emergency Contact Name:</strong><br> <?php echo htmlspecialchars($emergencyName); ?></div>
         <div class="info-item"><strong>Emergency Contact Phone:</strong><br> <?php echo htmlspecialchars($emergencyPhone); ?></div>
         <div class="info-item"><strong>Carpool Preferences:</strong><br> <?php echo htmlspecialchars($carpoolPrefs); ?></div>
+      </div>
+      <div class="info-grid">
+      <div class="info-item">
+        <strong>Address History:</strong><br>
+        <?php
+        if ($addresses) {
+            foreach ($addresses as $row) {
+                echo htmlspecialchars($row['address']) . "<br>";
+            }
+        } else {
+            echo "No addresses found.";
+        }
+        ?>
+        </div>
       </div>
       <div class="edit-profile-btn-wrapper">
         <a href="edit.php" class="btn-action edit-profile-btn">Edit Profile</a>

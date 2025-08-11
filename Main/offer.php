@@ -156,8 +156,20 @@ if (isset($_POST['cancel'])) {
             id="startaddress"
             name="startaddress"
             placeholder="Enter starting address"
+            list="address-list"
             required
           />
+          <datalist id="address-list">
+            <?php
+            $stmt = $conn->prepare("SELECT address FROM ADDRESS WHERE userID = :userID");
+            $stmt->execute([':userID' => $_SESSION['userID']]);
+            $addresses = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($addresses as $row) {
+                echo '<option value="' . htmlspecialchars($row['address']) . '">';
+            }
+            ?>
+          </datalist>
         </div>
 
         <div class="form-group">

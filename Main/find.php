@@ -124,8 +124,20 @@ if (!empty($destinationSearch)) {
           id="pickupLocation"
           name="pickupLocation"
           placeholder="Enter pickup location"
+          list="address-list"
           required
         />
+        <datalist id="address-list">
+            <?php
+            $stmt = $conn->prepare("SELECT address FROM ADDRESS WHERE userID = :userID");
+            $stmt->execute([':userID' => $_SESSION['userID']]);
+            $addresses = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($addresses as $row) {
+                echo '<option value="' . htmlspecialchars($row['address']) . '">';
+            }
+            ?>
+          </datalist>
         <input
           type="text"
           id="searchLocation"
