@@ -394,7 +394,7 @@ class RouteMap {
 
         const totalDistanceKM = totalDistance/1000;
         const gasCostPerKm = 0.15;
-        const totalCost = totalDistanceKM * gasCostPerKm;
+        const totalCost = (totalDistanceKM * gasCostPerKm) + 5;
         const numPeople = this.waypoints.length + 1;
         const pricePerPerson = (totalCost / numPeople).toFixed(2);
         
